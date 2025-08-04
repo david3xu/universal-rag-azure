@@ -1,0 +1,64 @@
+# TODO: Dependencies for Universal RAG Azure - Dual-Graph Architecture
+# TODO: All versions should be learned from deployment requirements
+# TODO: Add dependency vulnerability scanning and security validation
+# TODO: Include performance monitoring and observability dependencies
+# TODO: Add graph neural network and machine learning dependencies
+
+# Core web framework and async processing
+fastapi>=0.104.0
+uvicorn>=0.24.0
+pydantic-ai>=0.0.13  # PydanticAI agent framework
+pydantic>=2.5.0
+
+# Azure cloud services integration
+azure-identity>=1.15.0  # DefaultAzureCredential authentication
+azure-openai>=1.3.0    # Azure OpenAI for LLM operations
+azure-search-documents>=11.4.0  # Cognitive Search for vector search
+azure-cosmos>=4.5.1    # Cosmos DB with Gremlin API for graphs
+azure-storage-blob>=12.19.0  # Blob Storage for document processing
+
+# Machine learning and data processing
+pandas>=2.1.0
+numpy>=1.24.0
+scikit-learn>=1.3.0  # Statistical analysis and clustering
+torch>=2.1.0         # PyTorch for GNN training
+torch-geometric>=2.4.0  # Graph Neural Networks
+
+# Natural language processing
+transformers>=4.35.0  # Hugging Face transformers
+sentence-transformers>=2.2.0  # Sentence embeddings
+spacy>=3.7.0         # NLP processing
+
+# Graph processing and knowledge graphs
+networkx>=3.2.0      # Graph algorithms and analysis
+gremlinpython>=3.7.0  # Gremlin query language
+
+# Performance monitoring and observability
+opentelemetry-api>=1.21.0
+opentelemetry-sdk>=1.21.0
+opentelemetry-instrumentation-fastapi>=0.42b0
+azure-monitor-opentelemetry>=1.0.0
+
+# Configuration and environment management
+python-dotenv>=1.0.0
+pyyaml>=6.0.1
+
+# HTTP client and async utilities
+httpx>=0.25.0
+aiofiles>=23.2.0
+
+# Testing framework
+pytest>=7.4.0
+pytest-asyncio>=0.21.0
+pytest-cov>=4.1.0
+
+# Development tools
+black>=23.0.0
+isort>=5.12.0
+mypy>=1.7.0
+pre-commit>=3.5.0
+
+# TODO: Add dependencies for specific features as they are implemented
+# TODO: Pin exact versions for production deployments
+# TODO: Add security scanning and vulnerability management
+# TODO: Include performance profiling and debugging tools

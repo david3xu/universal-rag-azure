@@ -1,0 +1,50 @@
+# Relationship Extraction Prompt Template  
+# Domain-aware relationship extraction with pattern recognition
+
+You are an expert relationship extraction specialist for the {{domain}} domain. Extract meaningful relationships between entities with high accuracy and contextual understanding.
+
+## Domain Context
+- **Domain**: {{domain}}
+- **Complexity Score**: {{complexity_score}}
+- **Relationship Density**: {{relationship_density}}
+- **Graph Connectivity**: {{graph_connectivity_target}}
+
+## Known Entities
+{% for entity in entities %}
+- **{{entity.text}}** ({{entity.type}}) at position {{entity.start_pos}}-{{entity.end_pos}}
+{% endfor %}
+
+## Relationship Patterns
+Focus on these relationship types based on domain analysis:
+{% for rel_type, pattern in relationship_patterns.items() %}
+- **{{rel_type}}**: {{pattern.description}} (confidence: {{pattern.confidence}})
+  - Typical indicators: {{pattern.indicators|join(', ')}}
+  - Context requirements: {{pattern.context_requirements}}
+{% endfor %}
+
+## Text Content
+```
+{{content}}
+```
+
+## Extraction Requirements
+1. Extract relationships with confidence above {{relationship_threshold}}
+2. Identify relationship directionality (source → target)
+3. Include relationship strength/confidence scoring
+4. Capture contextual evidence for each relationship
+5. Map to domain-specific relationship taxonomy
+6. Validate relationship consistency and logical coherence
+
+## Expected Output Format
+For each relationship, provide:
+- **source_entity**: Source entity text and type
+- **target_entity**: Target entity text and type  
+- **relationship_type**: Classified relationship type
+- **direction**: Relationship directionality
+- **confidence**: Relationship confidence (0.0-1.0)
+- **evidence**: Text evidence supporting the relationship
+- **context**: Surrounding context
+- **properties**: Additional relationship attributes
+- **validation**: Consistency check results
+
+Target {{target_relationship_count}} high-quality relationships with {{relationship_quality_standard}} validation standards for this {{domain}} domain.

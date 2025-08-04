@@ -1,0 +1,169 @@
+# TODO: PyProject configuration for Universal RAG Azure
+# TODO: All configuration should be learned from project requirements
+# TODO: Add comprehensive tooling configuration for development workflow
+# TODO: Include performance profiling and security scanning configuration
+# TODO: Add automated code quality and compliance checking
+
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "universal-rag-azure"
+version = "0.1.0"
+description = "Universal RAG system with dual-graph architecture and zero hardcoded values"
+authors = [
+    {name = "Universal RAG Team", email = "team@universalrag.com"}
+]
+readme = "README.md"
+requires-python = ">=3.11"
+keywords = ["RAG", "Azure", "AI", "Knowledge-Graph", "Vector-Search", "PydanticAI"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "Topic :: Internet :: WWW/HTTP :: HTTP Servers",
+    "Operating System :: OS Independent",
+]
+
+# TODO: Configure Black formatter with learned formatting preferences
+[tool.black]
+line-length = 88
+target-version = ["py311"]
+extend-exclude = '''
+/(
+    \.eggs
+  | \.git
+  | \.hg
+  | \.mypy_cache
+  | \.tox
+  | \.venv
+  | _build
+  | buck-out
+  | build
+  | dist
+  | cache
+)/
+'''
+
+# TODO: Configure isort with comprehensive import management
+[tool.isort]
+profile = "black"
+line_length = 88
+known_first_party = ["agents", "api", "config", "azure_services", "prompt_flows"]
+multi_line_output = 3
+include_trailing_comma = true
+force_grid_wrap = 0
+use_parentheses = true
+ensure_newline_before_comments = true
+skip_glob = ["cache/*", "**/.venv/*"]
+
+# TODO: Configure pytest with comprehensive testing framework
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+addopts = [
+    "--strict-markers",
+    "--strict-config",
+    "--cov=agents",
+    "--cov=api",
+    "--cov=azure_services",
+    "--cov=config",
+    "--cov-report=term-missing",
+    "--cov-report=html:htmlcov",
+    "--cov-fail-under=80"
+]
+markers = [
+    "asyncio: marks tests as async",
+    "integration: marks tests as integration tests",
+    "unit: marks tests as unit tests",
+    "architecture: marks tests for architecture compliance",
+    "performance: marks tests for performance validation"
+]
+
+# TODO: Configure MyPy with strict type checking for production code
+[tool.mypy]
+python_version = "3.11"
+strict = true
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
+disallow_incomplete_defs = true
+check_untyped_defs = true
+disallow_untyped_decorators = true
+no_implicit_optional = true
+warn_redundant_casts = true
+warn_unused_ignores = true
+warn_no_return = true
+warn_unreachable = true
+strict_equality = true
+
+# TODO: Configure coverage reporting with comprehensive metrics
+[tool.coverage.run]
+source = ["agents", "api", "azure_services", "config"]
+omit = [
+    "tests/*",
+    "*/test_*",
+    "cache/*",
+    "*/__pycache__/*"
+]
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "raise AssertionError",
+    "raise NotImplementedError",
+    "if __name__ == .__main__.:",
+    "class .*\\bProtocol\\):",
+    "@(abc\\.)?abstractmethod",
+    "# TODO:"
+]
+
+# TODO: Configure pre-commit hooks for code quality and anti-hardcoding enforcement
+[tool.pre-commit]
+repos = [
+    {
+        repo = "https://github.com/pre-commit/pre-commit-hooks",
+        rev = "v4.5.0",
+        hooks = [
+            {id = "trailing-whitespace"},
+            {id = "end-of-file-fixer"},
+            {id = "check-yaml"},
+            {id = "check-added-large-files"},
+            {id = "check-merge-conflict"}
+        ]
+    },
+    {
+        repo = "https://github.com/psf/black",
+        rev = "23.11.0",
+        hooks = [{id = "black"}]
+    },
+    {
+        repo = "https://github.com/pycqa/isort",
+        rev = "5.12.0",
+        hooks = [{id = "isort"}]
+    },
+    {
+        repo = "https://github.com/pre-commit/mirrors-mypy",
+        rev = "v1.7.1",
+        hooks = [
+            {
+                id = "mypy",
+                additional_dependencies = ["pydantic", "fastapi", "pydantic-ai"],
+                args = ["--strict"]
+            }
+        ]
+    }
+]
+
+# TODO: Add anti-hardcoding validation hook
+# TODO: Add security scanning and vulnerability detection
+# TODO: Add performance regression testing hooks
+# TODO: Add documentation and API compliance validation

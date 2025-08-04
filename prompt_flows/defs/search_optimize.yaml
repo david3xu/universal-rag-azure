@@ -1,0 +1,172 @@
+# Search Optimization Workflow Definition
+# Dynamic search parameter optimization based on query analysis and performance feedback
+
+workflow_id: "search_optimization"
+description: "Intelligent search parameter optimization for tri-modal search performance"
+version: "1.0"
+
+# Workflow execution graph
+stages:
+  - name: "query_analysis"
+    type: "llm"
+    template: "query_analyze.jinja2"
+    description: "Analyze query characteristics and intent classification"
+    inputs:
+      - query
+      - domain
+      - user_context
+      - historical_queries
+    outputs:
+      - query_type
+      - complexity_level
+      - intent_classification
+      - semantic_features
+      - optimization_requirements
+    validation:
+      schema: "query_analysis_schema.json"
+      required_fields: ["query_type", "complexity_level", "intent_classification"]
+    performance_targets:
+      max_execution_time: "{{ query_analysis_timeout | default(10.0) }}"
+      min_classification_confidence: "{{ classification_confidence_threshold | default(0.85) }}"
+
+  - name: "performance_analysis"
+    type: "python"
+    function: "analyze_historical_performance"
+    description: "Analyze historical performance for similar queries"
+    depends_on: ["query_analysis"]
+    inputs:
+      - query_type
+      - domain
+      - complexity_level
+      - performance_history
+      - benchmark_data
+    outputs:
+      - performance_patterns
+      - optimization_opportunities
+      - constraint_analysis
+      - baseline_metrics
+    validation:
+      min_historical_samples: 3
+    performance_targets:
+      max_execution_time: "{{ performance_analysis_timeout | default(15.0) }}"
+
+  - name: "parameter_optimization"
+    type: "llm"
+    template: "search_optimize.jinja2"
+    description: "Generate optimized search parameters based on analysis"
+    depends_on: ["query_analysis", "performance_analysis"]
+    inputs:
+      - query
+      - query_type
+      - domain
+      - performance_patterns
+      - optimization_requirements
+      - current_parameters
+      - performance_constraints
+    outputs:
+      - optimized_similarity_threshold
+      - optimized_tri_modal_weights
+      - optimized_hop_count
+      - optimized_max_results
+      - optimization_reasoning
+      - expected_performance
+      - fallback_parameters
+    validation:
+      schema: "parameter_optimization_schema.json"
+      required_fields: ["optimized_similarity_threshold", "optimized_tri_modal_weights"]
+    performance_targets:
+      max_execution_time: "{{ parameter_optimization_timeout | default(20.0) }}"
+      min_optimization_confidence: "{{ optimization_confidence_threshold | default(0.80) }}"
+
+  - name: "parameter_validation"
+    type: "python"
+    function: "validate_search_parameters"
+    description: "Validate optimized parameters against constraints and domain rules"
+    depends_on: ["parameter_optimization"]
+    inputs:
+      - optimized_parameters
+      - domain_constraints
+      - performance_limits
+      - resource_constraints
+    outputs:
+      - validated_parameters
+      - constraint_compliance
+      - risk_assessment
+      - validation_report
+    validation:
+      all_constraints_met: true
+      estimated_performance_within_limits: true
+    performance_targets:
+      max_execution_time: "{{ parameter_validation_timeout | default(5.0) }}"
+
+  - name: "a_b_test_preparation"
+    type: "python"
+    function: "prepare_parameter_variants"
+    description: "Prepare A/B test variants for parameter optimization validation"
+    depends_on: ["parameter_validation"]
+    inputs:
+      - validated_parameters
+      - current_parameters
+      - variation_strategy
+      - test_configuration
+    outputs:
+      - parameter_variants
+      - test_plan
+      - success_metrics
+      - monitoring_setup
+    validation:
+      min_variants: 2
+      max_variants: 4
+    performance_targets:
+      max_execution_time: "{{ ab_test_preparation_timeout | default(10.0) }}"
+
+# Global workflow configuration
+execution_config:
+  parallel_execution: true
+  retry_policy:
+    max_retries: 2
+    retry_delay: 2.0
+  timeout: 180.0
+  resource_limits:
+    max_memory: "2GB"
+    max_cpu: "2 cores"
+
+# Success criteria
+success_criteria:
+  - all_stages_completed: true
+  - parameters_optimized: true
+  - constraints_satisfied: true
+  - expected_performance_improvement: "{{ performance_improvement_target | default(0.15) }}"  # Performance improvement target
+  - validation_passed: true
+
+# Error handling and recovery
+error_handling:
+  - stage: "query_analysis"
+    on_failure: "use_default_classification"
+  - stage: "performance_analysis"
+    on_failure: "use_global_benchmarks"
+  - stage: "parameter_optimization"
+    on_failure: "use_conservative_optimization"
+  - stage: "parameter_validation"
+    on_failure: "fallback_to_current_parameters"
+
+# Monitoring and metrics
+monitoring:
+  track_optimization_effectiveness: true
+  track_parameter_stability: true
+  track_performance_improvements: true
+  track_constraint_violations: true
+  generate_optimization_report: true
+
+# Performance thresholds
+performance_thresholds:
+  max_response_time_increase: "{{ max_response_time_increase | default(0.1) }}"  # Max response time increase threshold
+  min_relevance_improvement: "{{ min_relevance_improvement | default(0.05) }}"   # Min relevance improvement threshold
+  max_resource_usage_increase: "{{ max_resource_usage_increase | default(0.2) }}"  # Max resource usage increase threshold
+
+# Azure service integration
+azure_integration:
+  use_azure_openai: true
+  use_azure_storage: true  # For performance history
+  use_azure_cosmos: true   # For parameter tracking
+  authentication: "managed_identity"

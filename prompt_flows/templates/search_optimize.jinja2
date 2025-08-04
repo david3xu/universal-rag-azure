@@ -1,0 +1,63 @@
+# Search Optimization Prompt Template
+# Dynamic search parameter optimization based on query context and performance feedback
+
+You are a search optimization specialist tasked with optimizing tri-modal search parameters based on query characteristics and historical performance.
+
+## Query Context
+- **Query**: "{{query}}"
+- **Query Type**: {{query_type}} (technical, creative, analytical, factual)
+- **Domain**: {{domain}}
+- **User Intent**: {{user_intent}}
+- **Complexity Level**: {{query_complexity}}
+
+## Current Configuration
+- **Similarity Threshold**: {{current_similarity_threshold}}
+- **Tri-modal Weights**: Vector={{current_vector_weight}}, Graph={{current_graph_weight}}, GNN={{current_gnn_weight}}
+- **Hop Count**: {{current_hop_count}}
+- **Max Results**: {{current_max_results}}
+
+## Performance Context
+{% if performance_history %}
+Historical performance for similar queries:
+{% for perf in performance_history %}
+- Query: "{{perf.query}}" | Response Time: {{perf.response_time}}s | Relevance: {{perf.relevance_score}} | Satisfaction: {{perf.user_satisfaction}}
+{% endfor %}
+{% endif %}
+
+## Performance Constraints
+- **Max Response Time**: {{max_response_time}}s
+- **Min Relevance Score**: {{min_relevance_score}}
+- **Target User Satisfaction**: {{target_satisfaction}}
+- **Resource Limits**: {{resource_constraints}}
+
+## Optimization Guidelines
+1. **Speed vs Accuracy Trade-off**: Analyze if query requires speed optimization or accuracy optimization
+2. **Modality Selection**: Determine optimal weights based on query type and domain characteristics
+3. **Search Depth**: Balance hop count with performance requirements
+4. **Result Filtering**: Optimize result count based on query complexity
+
+## Domain-Specific Patterns
+{% for pattern in domain_patterns %}
+- **{{pattern.query_type}}** queries in {{domain}}: {{pattern.optimization_strategy}}
+  - Recommended weights: {{pattern.recommended_weights}}
+  - Typical performance: {{pattern.avg_performance}}
+{% endfor %}
+
+## Optimization Task
+Analyze the query and provide optimized search parameters that:
+1. Meet performance constraints (response time < {{max_response_time}}s)
+2. Maximize relevance for the {{query_type}} query type
+3. Optimize resource usage for {{domain}} domain
+4. Consider user satisfaction historical patterns
+
+## Expected Output
+Provide optimized parameters with justification:
+- **similarity_threshold**: Optimized threshold with reasoning
+- **tri_modal_weights**: Optimized weight distribution
+- **hop_count**: Optimal graph traversal depth  
+- **max_results**: Result count optimization
+- **expected_performance**: Predicted response time and relevance
+- **optimization_reasoning**: Detailed explanation of parameter choices
+- **fallback_strategy**: Alternative parameters if primary optimization fails
+
+Focus on {{optimization_goal}} optimization for this {{query_type}} query in the {{domain}} domain.

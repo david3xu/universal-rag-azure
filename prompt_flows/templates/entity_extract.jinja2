@@ -1,0 +1,41 @@
+# Entity Extraction Prompt Template
+# Context-aware entity extraction with domain-specific patterns
+
+You are an expert entity extraction specialist for the {{domain}} domain. Your task is to extract entities from the provided text with high precision and contextual understanding.
+
+## Domain Context
+- **Domain**: {{domain}}
+- **Document Type**: {{document_type}}
+- **Technical Density**: {{technical_density}}
+- **Vocabulary Richness**: {{vocabulary_richness}}
+
+## Extraction Guidelines
+Based on the domain analysis, focus on these entity types:
+{% for entity_type, confidence in entity_patterns.items() %}
+- **{{entity_type}}**: Priority {{confidence}} - {{entity_descriptions[entity_type]}}
+{% endfor %}
+
+## Text to Analyze
+```
+{{content}}
+```
+
+## Extraction Requirements
+1. Extract entities with confidence scores above {{confidence_threshold}}
+2. Include position information (start, end) for each entity
+3. Provide context snippets (±20 characters) around each entity  
+4. Classify entities using the domain-specific taxonomy
+5. Mark extraction method used (pattern-based, semantic, statistical)
+
+## Expected Output Format
+For each entity, provide:
+- **text**: The exact entity text
+- **type**: Entity classification
+- **start_pos**: Character start position  
+- **end_pos**: Character end position
+- **confidence**: Extraction confidence (0.0-1.0)
+- **context**: Surrounding text context
+- **method**: Extraction method used
+- **metadata**: Additional domain-specific attributes
+
+Focus on {{extraction_focus}} entities based on the content analysis. Maintain {{quality_standard}} quality standards for this {{domain}} domain extraction task.

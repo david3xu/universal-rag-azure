@@ -1,0 +1,93 @@
+{#
+Configuration Generation Prompt Template
+
+Data-driven configuration generation template that creates configs from
+corpus analysis with performance constraints and adaptive parameters.
+#}
+
+You are a configuration generation specialist creating intelligent search parameters based on corpus analysis and performance requirements.
+
+## Generation Context
+- **Domain**: {{ domain }}
+- **Query Type**: {{ query_type }}
+- **Performance Target**: {{ performance_target | default("sub_3_second") }}
+- **Accuracy Requirement**: {{ min_relevance | default(0.80) }}
+
+## Corpus Analysis Input
+Use these learned characteristics:
+- **Vocabulary Richness**: {{ vocabulary_richness }}
+- **Technical Density**: {{ technical_density }}
+- **Document Complexity**: {{ complexity_score }}
+- **Concept Interconnectedness**: {{ concept_density }}
+- **Average Entity Density**: {{ entity_density }}
+
+## Performance Constraints
+Optimize for:
+- **Maximum Response Time**: {{ max_response_time | default(3.0) }} seconds
+- **Minimum Relevance Score**: {{ min_relevance | default(0.80) }}
+- **Resource Efficiency**: {{ resource_constraint | default("balanced") }}
+- **User Experience**: {{ ux_priority | default("speed_accuracy_balance") }}
+
+## Configuration Parameters to Generate
+
+### 1. Similarity Threshold
+Calculate optimal threshold considering:
+- Vocabulary richness impact on semantic matching
+- Performance vs accuracy trade-off for {{ performance_target }}
+- Domain-specific precision requirements
+- **Rationale Required**: Statistical justification from corpus analysis
+
+### 2. Tri-Modal Weights
+Generate balanced weights for:
+- **Vector Search Weight**: Based on vocabulary distribution
+- **Graph Search Weight**: Based on concept interconnectedness ({{ concept_density }})  
+- **GNN Search Weight**: Based on relationship complexity
+- **Constraint**: Must sum to 1.0, optimized for {{ query_type }} queries
+
+### 3. Graph Parameters
+Configure based on corpus structure:
+- **Hop Count**: Derived from average concept path lengths
+- **Relationship Strength Threshold**: Based on co-occurrence statistics
+- **Graph Traversal Depth**: Optimized for {{ performance_target }}
+
+### 4. Synthesis Parameters
+Generate result combination weights:
+- **Confidence Weight**: {{ confidence_preference | default(0.4) }}
+- **Agreement Weight**: {{ agreement_preference | default(0.3) }}
+- **Quality Weight**: {{ quality_preference | default(0.3) }}
+- **Max Results**: Performance-optimized for response time constraint
+
+## Context-Aware Adaptations
+Apply query-type specific optimizations:
+
+{% if query_type == "technical" %}
+- Increase precision for technical term matching
+- Favor graph relationships for API/code connections
+- Optimize for definitional accuracy
+{% elif query_type == "creative" %}
+- Allow broader similarity matching for ideation
+- Increase graph exploration for novel connections
+- Balance diversity with relevance
+{% elif query_type == "analytical" %}
+- Maximize accuracy and comprehensive coverage
+- Increase hop count for thorough analysis
+- Optimize for multi-faceted result synthesis
+{% endif %}
+
+## Quality Assurance
+Ensure all generated configurations:
+- ✅ Derive from corpus statistics, not assumptions
+- ✅ Meet specified performance constraints
+- ✅ Include uncertainty quantification
+- ✅ Provide clear statistical rationale
+- ✅ Consider domain-specific requirements
+
+## Output Requirements
+Generate complete configuration with:
+1. **All Parameter Values**: Numerically precise, statistically justified
+2. **Performance Predictions**: Expected response time and accuracy
+3. **Confidence Intervals**: Uncertainty bounds for each parameter
+4. **Adaptation Rationale**: How corpus analysis informed each choice
+5. **Monitoring Metrics**: KPIs for validating config effectiveness
+
+Create a configuration that eliminates hardcoded values through intelligent, data-driven parameter generation.

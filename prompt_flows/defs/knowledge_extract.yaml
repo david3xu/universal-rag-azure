@@ -1,0 +1,169 @@
+# Knowledge Extraction Workflow Definition
+# Multi-stage pipeline for Entity Extraction → Relationship Extraction → Validation
+
+workflow_id: "knowledge_extraction"
+description: "Comprehensive knowledge extraction with entity and relationship discovery"
+version: "1.0"
+
+# Workflow execution graph
+stages:
+  - name: "entity_extraction"
+    type: "llm"
+    template: "entity_extract.jinja2"
+    description: "Domain-aware entity extraction with confidence scoring"
+    inputs:
+      - domain
+      - document_type
+      - content
+      - entity_patterns
+      - technical_density
+      - vocabulary_richness
+    outputs:
+      - extracted_entities
+      - entity_confidence_scores
+      - extraction_metadata
+      - position_mappings
+    validation:
+      schema: "entity_extraction_schema.json"
+      required_fields: ["extracted_entities", "entity_confidence_scores"]
+      min_entities: 3
+      min_avg_confidence: "{{ entity_min_confidence | default(0.7) }}"
+    performance_targets:
+      max_execution_time: "{{ entity_extraction_timeout | default(45.0) }}"
+      min_precision: "{{ entity_min_precision | default(0.85) }}"
+      min_recall: "{{ entity_min_recall | default(0.75) }}"
+
+  - name: "relationship_extraction"
+    type: "llm"
+    template: "relation_extract.jinja2"
+    description: "Extract relationships between identified entities"
+    depends_on: ["entity_extraction"]
+    inputs:
+      - domain
+      - content
+      - extracted_entities
+      - relationship_patterns
+      - complexity_score
+      - relationship_density
+    outputs:
+      - extracted_relationships
+      - relationship_confidence_scores
+      - relationship_evidence
+      - graph_structure
+    validation:
+      schema: "relationship_extraction_schema.json"
+      required_fields: ["extracted_relationships", "graph_structure"]
+      min_relationships: 2
+      min_avg_confidence: "{{ relationship_min_confidence | default(0.65) }}"
+    performance_targets:
+      max_execution_time: "{{ relationship_extraction_timeout | default(60.0) }}"
+      min_precision: "{{ relationship_min_precision | default(0.80) }}"
+      min_connectivity: "{{ relationship_min_connectivity | default(0.6) }}"
+
+  - name: "knowledge_validation"
+    type: "python"
+    function: "validate_extracted_knowledge"
+    description: "Validate and refine extracted knowledge for consistency"
+    depends_on: ["entity_extraction", "relationship_extraction"]
+    inputs:
+      - extracted_entities
+      - extracted_relationships
+      - domain_ontology
+      - validation_rules
+    outputs:
+      - validated_entities
+      - validated_relationships
+      - consistency_scores
+      - validation_report
+      - knowledge_graph
+    validation:
+      schema: "knowledge_validation_schema.json"
+      min_consistency_score: "{{ knowledge_min_consistency | default(0.75) }}"
+    performance_targets:
+      max_execution_time: "{{ knowledge_validation_timeout | default(30.0) }}"
+
+  - name: "graph_construction"
+    type: "python"  
+    function: "construct_knowledge_graph"
+    description: "Build structured knowledge graph from validated extractions"
+    depends_on: ["knowledge_validation"]
+    inputs:
+      - validated_entities
+      - validated_relationships
+      - graph_schema
+      - domain_constraints
+    outputs:
+      - knowledge_graph
+      - graph_statistics
+      - quality_metrics
+      - export_formats
+    validation:
+      min_nodes: 5
+      min_edges: 3
+      max_disconnected_components: 2
+    performance_targets:
+      max_execution_time: "{{ graph_construction_timeout | default(20.0) }}"
+
+  - name: "quality_assessment"
+    type: "validation"
+    function: "assess_extraction_quality"
+    description: "Comprehensive quality assessment of extracted knowledge"
+    depends_on: ["graph_construction"]
+    inputs:
+      - knowledge_graph
+      - extraction_metadata
+      - quality_standards
+      - domain_benchmarks
+    outputs:
+      - quality_report
+      - improvement_suggestions
+      - confidence_analysis
+      - completeness_score
+    validation:
+      min_overall_quality: "{{ quality_min_threshold | default(0.80) }}"
+    performance_targets:
+      max_execution_time: "{{ quality_assessment_timeout | default(15.0) }}"
+
+# Global workflow configuration
+execution_config:
+  parallel_execution: true
+  retry_policy:
+    max_retries: 2
+    retry_delay: 3.0
+  timeout: 300.0
+  resource_limits:
+    max_memory: "4GB"
+    max_cpu: "4 cores"
+
+# Quality gates and success criteria
+success_criteria:
+  - all_stages_completed: true
+  - min_extracted_entities: 5
+  - min_extracted_relationships: 3
+  - min_overall_confidence: "{{ overall_min_confidence | default(0.75) }}"
+  - quality_assessment_passed: true
+  - graph_connectivity_achieved: true
+
+# Error handling and recovery
+error_handling:
+  - stage: "entity_extraction"
+    on_failure: "retry_with_lower_threshold"
+  - stage: "relationship_extraction"
+    on_failure: "use_pattern_based_fallback"
+  - stage: "knowledge_validation" 
+    on_failure: "accept_partial_validation"
+
+# Monitoring and metrics
+monitoring:
+  track_execution_time: true
+  track_resource_usage: true
+  track_extraction_quality: true
+  track_confidence_scores: true
+  generate_quality_report: true
+
+# Azure service integration
+azure_integration:
+  use_azure_openai: true
+  use_azure_cosmos: true
+  use_azure_storage: true
+  authentication: "managed_identity"

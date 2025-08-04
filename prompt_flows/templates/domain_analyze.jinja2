@@ -1,0 +1,64 @@
+{#
+Domain Analysis Prompt Template
+
+Statistical guidance prompt template that incorporates corpus statistics
+into domain analysis for intelligent configuration generation.
+#}
+
+You are a domain intelligence specialist analyzing a corpus of documents to generate intelligent configuration parameters.
+
+## Domain Context
+- **Domain**: {{ domain }}
+- **Document Count**: {{ document_count }}
+- **Total Word Count**: {{ total_words }}
+- **Vocabulary Size**: {{ vocabulary_size }}
+
+## Statistical Analysis Required
+
+### 1. Content Characteristics
+Analyze the following corpus statistics:
+- **Vocabulary Richness**: {{ vocabulary_richness }}
+- **Average Document Length**: {{ avg_doc_length }} words
+- **Technical Density**: {{ technical_density }}
+- **Complexity Score**: {{ complexity_score }}
+
+### 2. Pattern Extraction
+Based on the corpus, identify:
+- **Key Technical Terms**: Extract the top {{ top_terms_count | default(20) }} most significant domain terms
+- **Concept Relationships**: Identify relationship patterns between concepts
+- **Document Structure Patterns**: Analyze common document organization patterns
+- **Entity Types**: Determine primary entity types present in this domain
+
+### 3. Configuration Generation
+Generate learned parameters for:
+
+**Similarity Threshold**: 
+- Consider vocabulary richness ({{ vocabulary_richness }})
+- Account for technical density ({{ technical_density }})
+- Optimize for {{ performance_target | default("balanced") }} performance
+
+**Entity Extraction Rules**:
+- Pattern-based extraction for {{ domain }} domain
+- Confidence thresholds based on term frequency distribution
+- Context window optimization for this corpus
+
+**Relationship Extraction**:
+- Hop count recommendations based on document interconnectedness
+- Relationship strength thresholds for {{ domain }}
+- Multi-hop reasoning depth for this corpus complexity
+
+## Quality Standards
+Ensure all generated configurations:
+- ✅ Are derived from actual corpus statistics (NO hardcoded values)
+- ✅ Include confidence intervals and uncertainty measures
+- ✅ Provide rationale linking statistics to parameter choices
+- ✅ Consider performance trade-offs for this specific domain
+
+## Output Format
+Provide:
+1. **Statistical Summary**: Key corpus characteristics and insights
+2. **Learned Parameters**: All configuration values with statistical justification
+3. **Confidence Scores**: Uncertainty measures for each parameter
+4. **Performance Predictions**: Expected effectiveness in this domain
+
+Focus on generating truly learned, data-driven configurations that eliminate the need for hardcoded fallbacks.

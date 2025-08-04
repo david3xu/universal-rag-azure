@@ -1,0 +1,135 @@
+# Config-Extraction Workflow Definition
+# Multi-stage pipeline for Analysis → Pattern Learning → Config Generation
+
+workflow_id: "domain_config_extraction"
+description: "Intelligent domain analysis and configuration generation workflow"
+version: "1.0"
+
+# Workflow execution graph
+stages:
+  - name: "corpus_analysis"
+    type: "llm"
+    template: "domain_analyze.jinja2"
+    description: "Statistical and semantic analysis of domain corpus"
+    inputs:
+      - domain
+      - document_paths
+      - analysis_config
+    outputs:
+      - vocabulary_richness
+      - technical_density
+      - complexity_score
+      - concept_density
+      - statistical_summary
+    validation:
+      schema: "corpus_analysis_schema.json"
+      required_fields: ["vocabulary_richness", "technical_density"]
+    performance_targets:
+      max_execution_time: 30.0
+      min_confidence_score: 0.85
+
+  - name: "pattern_learning"
+    type: "python"
+    function: "extract_domain_patterns"
+    description: "Extract patterns and relationships from analyzed corpus"
+    depends_on: ["corpus_analysis"]
+    inputs:
+      - statistical_summary
+      - domain_context
+    outputs:
+      - entity_patterns
+      - relationship_patterns
+      - extraction_rules
+      - confidence_intervals
+    validation:
+      schema: "pattern_learning_schema.json"
+      min_pattern_count: 5
+    performance_targets:
+      max_execution_time: 15.0
+
+  - name: "config_generation"
+    type: "llm"
+    template: "config_gen.jinja2"
+    description: "Generate intelligent configuration from learned patterns"
+    depends_on: ["corpus_analysis", "pattern_learning"]
+    inputs:
+      - domain
+      - query_type
+      - vocabulary_richness
+      - technical_density
+      - complexity_score
+      - concept_density
+      - performance_constraints
+    outputs:
+      - similarity_threshold
+      - tri_modal_weights
+      - hop_count
+      - max_results
+      - synthesis_weights
+      - performance_predictions
+      - confidence_scores
+    validation:
+      schema: "config_generation_schema.json"
+      required_fields: ["similarity_threshold", "tri_modal_weights"]
+    performance_targets:
+      max_execution_time: 20.0
+      min_config_confidence: 0.80
+
+  - name: "quality_assessment"
+    type: "validation"
+    function: "validate_generated_config"
+    description: "Validate generated configuration against quality standards"
+    depends_on: ["config_generation"]
+    inputs:
+      - generated_config
+      - quality_standards
+      - performance_requirements
+    outputs:
+      - validation_results
+      - quality_score
+      - improvement_suggestions
+    validation:
+      min_quality_score: 0.85
+    performance_targets:
+      max_execution_time: 5.0
+
+# Global workflow configuration
+execution_config:
+  parallel_execution: true
+  retry_policy:
+    max_retries: 3
+    retry_delay: 5.0
+  timeout: 120.0
+  resource_limits:
+    max_memory: "2GB"
+    max_cpu: "2 cores"
+
+# Quality gates and success criteria
+success_criteria:
+  - all_stages_completed: true
+  - min_overall_confidence: 0.80
+  - config_validation_passed: true
+  - performance_targets_met: true
+
+# Error handling and recovery
+error_handling:
+  - stage: "corpus_analysis"
+    on_failure: "retry_with_simplified_analysis"
+  - stage: "pattern_learning"
+    on_failure: "use_baseline_patterns"
+  - stage: "config_generation"
+    on_failure: "generate_conservative_config"
+
+# Monitoring and metrics
+monitoring:
+  track_execution_time: true
+  track_resource_usage: true
+  track_confidence_scores: true
+  generate_performance_report: true
+
+# Azure service integration
+azure_integration:
+  use_azure_openai: true
+  use_azure_storage: true
+  use_azure_cosmos: true
+  authentication: "managed_identity"
