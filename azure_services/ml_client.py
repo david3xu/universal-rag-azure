@@ -6,40 +6,13 @@ the concise azure_services/ pattern for enterprise-ready scaling.
 """
 
 from typing import Any, Dict, List, Optional
-from pydantic import BaseModel, Field
-
-
-class GNNTrainingConfig(BaseModel):
-    """Configuration for GNN training job."""
-    architecture: str = Field(description="GraphSAGE, GAT, GCN")
-    hidden_dim: int = Field(description="Hidden layer dimension")
-    num_layers: int = Field(description="Number of GNN layers")
-    learning_rate: float = Field(description="Training learning rate")
-    batch_size: int = Field(description="Training batch size")
-    epochs: int = Field(description="Number of training epochs")
-    dropout_rate: float = Field(description="Dropout rate for regularization")
-
-
-class TrainingJobStatus(BaseModel):
-    """Status of GNN training job."""
-    job_id: str
-    status: str = Field(description="running, completed, failed")
-    progress: float = Field(description="Training progress percentage")
-    current_epoch: int
-    training_metrics: Dict[str, float] = Field(default_factory=dict)
-    estimated_completion: Optional[str] = None
-    error_message: Optional[str] = None
-
-
-class ModelDeploymentInfo(BaseModel):
-    """Information about deployed GNN model."""
-    model_name: str
-    version: str
-    endpoint_url: str
-    deployment_status: str
-    scoring_uri: str
-    swagger_uri: str
-    auto_scaling_config: Dict[str, Any] = Field(default_factory=dict)
+from models.validation import ValidationResult, ConfigValidation
+from models.domain import DomainConfig, CorpusAnalysis, DomainStatistics, DomainDiscovery
+from models.azure import (
+    AzureServiceResponse, EmbeddingResult, SearchResult, ServiceHealth,
+    GNNTrainingConfig, TrainingJobStatus, ModelDeploymentInfo
+)
+from models.workflow import WorkflowContext, WorkflowResult, NodeExecution
 
 
 class AzureMLClient:
@@ -49,6 +22,12 @@ class AzureMLClient:
         """Initialize basic Azure ML client."""
         # TODO: Basic initialization - set up Azure ML workspace client
         # TODO: Configure authentication with DefaultAzureCredential
+        # TODO: Implement Universal GNN architecture with PyTorch Geometric
+        # TODO: Set up Azure ML training client with complete training workflow management
+        # TODO: Add model lifecycle management with automated deployment and performance tracking
+        # TODO: Create GNN inference pipeline with production-ready inference and batch processing
+        # TODO: Implement model versioning and A/B testing capabilities
+        # TODO: Add distributed training support for large-scale GNN models
         pass
     
     async def submit_gnn_training_job(self, graph_data_path: str) -> str:
@@ -56,26 +35,21 @@ class AzureMLClient:
         # TODO: Implement basic GNN training job submission
         # TODO: Submit training job to Azure ML workspace
         # TODO: Return job ID for tracking
-        return "basic_job_placeholder"
+        pass
     
     async def monitor_training_progress(self, job_id: str) -> TrainingJobStatus:
         """Basic training progress monitoring - simplified version."""
         # TODO: Implement basic job status monitoring
         # TODO: Get training job progress from Azure ML
         # TODO: Return training status
-        return TrainingJobStatus(
-            job_id=job_id,
-            status="running",
-            progress=0.0,
-            current_epoch=0
-        )
+        pass
     
     async def load_gnn_model(self, model_name: str) -> str:
         """Basic GNN model loading - simplified version."""
         # TODO: Implement basic model loading from Azure ML registry
         # TODO: Load trained GNN model for inference
         # TODO: Return model endpoint URL
-        return "basic_endpoint_placeholder"
+        pass
 # =============================================================================
 # TEMPORARILY COMMENTED OUT ADVANCED FEATURES
 # These will be re-enabled once basic functionality is working
@@ -111,7 +85,7 @@ class AzureMLClient:
 #     # TODO: Return complete deployment information
 #     pass
     
-# async def get_model_performance_metrics(self, model_name: str) -> Dict[str, Any]:
+# async def get_model_performance_metrics(self, model_name: str) -> WorkflowResult:
 #     """Get performance metrics for deployed GNN model."""
 #     # TODO: Retrieve model performance from training history
 #     # TODO: Get inference endpoint performance metrics
@@ -121,7 +95,7 @@ class AzureMLClient:
 #     # TODO: Return comprehensive performance metrics
 #     pass
     
-# async def manage_model_lifecycle(self, model_name: str, action: str) -> Dict[str, Any]:
+# async def manage_model_lifecycle(self, model_name: str, action: str) -> WorkflowResult:
 #     """Manage GNN model lifecycle (archive, delete, promote)."""
 #     # TODO: Validate lifecycle action and permissions
 #     # TODO: Handle model archival and backup procedures

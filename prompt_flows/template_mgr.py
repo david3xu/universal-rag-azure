@@ -7,28 +7,13 @@ engineering with template inheritance and validation.
 
 from typing import Any, Dict, List, Optional
 from pathlib import Path
-from pydantic import BaseModel, Field
-
-
-class TemplateConfig(BaseModel):
-    """Template configuration and metadata."""
-    template_name: str
-    template_path: str
-    template_type: str = Field(description="domain, extraction, search, validation")
-    required_variables: List[str] = Field(default_factory=list)
-    optional_variables: List[str] = Field(default_factory=list)
-    inheritance_chain: List[str] = Field(default_factory=list)
-    validation_schema: Optional[Dict[str, Any]] = None
-
-
-class TemplateRenderResult(BaseModel):
-    """Result of template rendering operation."""
-    rendered_content: str
-    template_name: str
-    render_time: float
-    variables_used: List[str]
-    missing_variables: List[str] = Field(default_factory=list)
-    warnings: List[str] = Field(default_factory=list)
+from models.domain import DomainConfig, CorpusAnalysis, DomainStatistics, DomainDiscovery
+from models.search import SearchRequest, SearchResponse, SearchResults, SearchMetrics
+from models.validation import ValidationResult, ConfigValidation
+from models.workflow import (
+    WorkflowContext, WorkflowResult, NodeExecution,
+    TemplateConfig, TemplateRenderResult
+)
 
 
 class TemplateMgr:
@@ -45,30 +30,21 @@ class TemplateMgr:
         # TODO: Implement basic template file loading
         # TODO: Read template from templates/ directory
         # TODO: Return basic template configuration
-        return TemplateConfig(
-            template_name=template_name,
-            template_path=f"templates/{template_name}.jinja2",
-            template_type="basic"
-        )
+        pass
     
-    async def render_prompt(self, template_name: str, context: Dict[str, Any]) -> TemplateRenderResult:
+    async def render_template(self, template_name: str, context: Dict[str, Any]) -> TemplateRenderResult:
         """Basic template rendering - simplified version."""
         # TODO: Implement basic template rendering with Jinja2
         # TODO: Render template with provided context
         # TODO: Return rendered result
-        return TemplateRenderResult(
-            rendered_content="Basic template rendering placeholder",
-            template_name=template_name,
-            render_time=0.0,
-            variables_used=list(context.keys())
-        )
+        pass
     
-    async def validate_template(self, template_name: str) -> Dict[str, Any]:
+    async def validate_template(self, template_name: str) -> WorkflowResult:
         """Basic template validation - simplified version."""
         # TODO: Implement basic template syntax validation
         # TODO: Check Jinja2 template validity
         # TODO: Return validation results
-        return {"valid": True, "errors": [], "warnings": []}
+        pass
 # =============================================================================
 # TEMPORARILY COMMENTED OUT ADVANCED FEATURES
 # These will be re-enabled once basic functionality is working
@@ -94,7 +70,7 @@ class TemplateMgr:
 #     # TODO: Return configuration for newly created template
 #     pass
     
-# async def optimize_template_performance(self, template_name: str) -> Dict[str, Any]:
+# async def optimize_template_performance(self, template_name: str) -> WorkflowResult:
 #     """Optimize template performance and rendering efficiency."""
 #     # TODO: Analyze template rendering performance metrics
 #     # TODO: Identify bottlenecks in variable processing and loops
@@ -104,7 +80,7 @@ class TemplateMgr:
 #     # TODO: Return optimization results and performance improvements
 #     pass
     
-# async def manage_template_versions(self, template_name: str) -> Dict[str, Any]:
+# async def manage_template_versions(self, template_name: str) -> WorkflowResult:
 #     """Manage template versions and backward compatibility."""
 #     # TODO: Track template version history and changes
 #     # TODO: Implement template versioning and migration strategies
@@ -124,7 +100,7 @@ class TemplateMgr:
 #     # TODO: Return list of test results for analysis
 #     pass
     
-# async def generate_template_documentation(self, template_name: str) -> Dict[str, Any]:
+# async def generate_template_documentation(self, template_name: str) -> WorkflowResult:
 #     """Generate comprehensive documentation for template."""
 #     # TODO: Extract template metadata and variable information
 #     # TODO: Generate usage examples and best practices
@@ -143,7 +119,7 @@ class TemplateMgr:
 #     # TODO: Log filter registration and usage metrics
 #     pass
 
-# async def backup_template_library(self, backup_location: str) -> Dict[str, Any]:
+# async def backup_template_library(self, backup_location: str) -> WorkflowResult:
 #     """Backup template library and configurations."""
 #     # TODO: Create comprehensive backup of all templates
 #     # TODO: Include template metadata and configuration files
@@ -153,7 +129,7 @@ class TemplateMgr:
 #     # TODO: Return backup operation results and location
 #     pass
 
-# async def import_template_library(self, import_location: str) -> Dict[str, Any]:
+# async def import_template_library(self, import_location: str) -> WorkflowResult:
 #     """Import template library from external source."""
 #     # TODO: Validate import source and template compatibility
 #     # TODO: Check for naming conflicts with existing templates

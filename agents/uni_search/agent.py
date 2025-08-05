@@ -6,29 +6,33 @@ Main agent for universal search operations.
 
 from pydantic_ai import Agent
 from typing import Dict, Any, List
+from models.search import SearchResults, SearchRequest, SearchResponse
+from models.domain import DomainConfig, CorpusAnalysis, DomainStatistics, DomainDiscovery
+from models.search import SearchRequest, SearchResponse, SearchResults, SearchMetrics
+from models.validation import ValidationResult, ConfigValidation
+from models.workflow import WorkflowContext, WorkflowResult, NodeExecution
 
 
 class UniSearchAgent:
     """Basic search agent - simplified for core functionality."""
     
     def __init__(self):
-        """Initialize basic search agent."""
-        # TODO: Basic initialization - set up minimal search components
+        """Initialize basic search agent with centralized prompt flow integration."""
+        # TODO: Initialize FlowMgr for centralized search optimization workflow execution  
+        # TODO: Set up PromptComposer for search query optimization prompts
+        # TODO: Configure search_optimize.yaml flow integration
+        # TODO: Initialize SearchTools with flow dependencies for embedding generation
         pass
     
-    async def search(self, query: str, domain: str) -> Dict[str, Any]:
-        """Basic search function - simplified version."""
-        # TODO: Implement basic search functionality
-        # TODO: Process query for the given domain
-        # TODO: Execute simple search logic
-        # TODO: Return search results
-        return {
-            "query": query,
-            "domain": domain,
-            "results": [],
-            "search_complete": True,
-            "message": "Basic search placeholder"
-        }
+    async def execute_search(self, query: str, domain: str) -> SearchResults:
+        """Execute intelligent search using centralized prompt flow for query optimization."""
+        # TODO: Retrieve domain configuration using ConfigProvider for search parameters
+        # TODO: Use FlowMgr to execute search_optimize.yaml flow for query processing and embedding
+        # TODO: Apply search_optimize.jinja2 template for domain-specific query optimization
+        # TODO: Execute vector search with learned similarity thresholds from centralized flow results
+        # TODO: Apply result ranking and synthesis using domain-specific weights from prompt flow
+        # TODO: Return search results as SearchResults structured model with relevance scores and metadata
+        pass
 
 
 # =============================================================================
@@ -36,7 +40,7 @@ class UniSearchAgent:
 # These will be re-enabled once basic functionality is working
 # =============================================================================
 
-# async def request_config(self, query: str, query_type: str, domain: str) -> Dict[str, Any]:
+# async def request_config(self, query: str, query_type: str, domain: str) -> DomainConfig:
 #     """Request intelligent configuration from AutoDomainAgent."""
 #     # TODO: Use ConfigNego to specify exact requirements
 #     # TODO: Include query complexity analysis and performance constraints
@@ -45,7 +49,7 @@ class UniSearchAgent:
 #     # TODO: Return validated configuration with source tracking
 #     pass
 
-# async def tri_modal_search(self, query: str, config: Dict[str, Any]) -> Dict[str, Any]:
+# async def tri_modal_search(self, query: str, config: Dict[str, Any]) -> SearchResults:
 #     """Perform parallel tri-modal search (Vector + Graph + GNN)."""
 #     # TODO: Use SearchOrchestrator for parallel execution
 #     # TODO: Execute vector search with learned similarity thresholds
@@ -55,7 +59,7 @@ class UniSearchAgent:
 #     # TODO: Return ModalityResults with confidence and metadata
 #     pass
 
-# async def synthesize_results(self, modality_results: List[Dict[str, Any]], config: Dict[str, Any]) -> Dict[str, Any]:
+# async def synthesize_results(self, modality_results: List[Dict[str, Any]], config: Dict[str, Any]) -> WorkflowResult:
 #     """Synthesize results using learned weights and confidence scoring."""
 #     # TODO: Apply dynamic weights learned from domain performance
 #     # TODO: Calculate agreement analysis between modalities

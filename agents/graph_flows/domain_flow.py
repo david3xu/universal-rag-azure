@@ -7,6 +7,10 @@ Config-Extraction workflow for domain configuration generation.
 from typing import Dict, Any, List
 from ..auto_domain.agent import AutoDomainAgent
 from ..supports.state_bridge import StateBridge
+from models.domain import DomainConfig, CorpusAnalysis, DomainStatistics, DomainDiscovery
+from models.search import SearchRequest, SearchResponse, SearchResults, SearchMetrics
+from models.validation import ValidationResult, ConfigValidation
+from models.workflow import WorkflowContext, WorkflowResult, NodeExecution
 
 
 class DomainFlow:
@@ -16,10 +20,9 @@ class DomainFlow:
         """Initialize basic domain flow."""
         # TODO: Basic initialization - set up domain analysis workflow
         # TODO: Initialize AutoDomainAgent and StateBridge
-        self.auto_domain_agent = AutoDomainAgent()
-        self.state_bridge = StateBridge()
+        pass
     
-    async def execute(self, documents: List[str], domain: str) -> Dict[str, Any]:
+    async def execute(self, documents: List[str], domain: str) -> DomainConfig:
         """Basic domain flow execution - simplified version."""
         # TODO: Implement basic domain configuration flow
         # TODO: Execute basic domain analysis
@@ -27,24 +30,14 @@ class DomainFlow:
         # TODO: Validate configuration completeness and correctness
         # TODO: Store configuration for search workflow communication
         # TODO: Return execution results with quality metrics
-        
-        # Basic domain analysis and configuration generation
-        analysis = await self.auto_domain_agent.analyze_corpus(documents[0] if documents else ".")
-        await self.state_bridge.store_config(domain, {"basic": True})
-        
-        return {
-            "success": True,
-            "domain": domain,
-            "config": {"basic": True},
-            "analysis": analysis
-        }
+        pass
 
 # =============================================================================
 # TEMPORARILY COMMENTED OUT ADVANCED FEATURES
 # These will be re-enabled once basic functionality is working
 # =============================================================================
 
-# async def communicate_with_search_flow(self, message_data: Dict[str, Any]) -> Dict[str, Any]:
+# async def communicate_with_search_flow(self, message_data: Dict[str, Any]) -> SearchResults:
 #     """Communicate with search workflow about configuration requirements."""
 #     # TODO: Receive configuration requirements from search workflow
 #     # TODO: Validate search workflow requirements against domain capabilities
@@ -54,7 +47,7 @@ class DomainFlow:
 #     # TODO: Return communication status and negotiated configuration
 #     pass
 
-# async def execute_config_extraction(self, corpus_path: str, domain_name: str) -> Dict[str, Any]:
+# async def execute_config_extraction(self, corpus_path: str, domain_name: str) -> DomainConfig:
 #     """Execute configuration extraction from corpus analysis."""
 #     # TODO: Initialize corpus discovery and document enumeration
 #     # TODO: Perform comprehensive corpus analysis (statistical + semantic)
@@ -64,7 +57,7 @@ class DomainFlow:
 #     # TODO: Return extraction results with confidence metrics
 #     pass
 
-# async def analyze_documents(self, documents: List[str], analysis_config: Dict[str, Any]) -> Dict[str, Any]:
+# async def analyze_documents(self, documents: List[str], analysis_config: Dict[str, Any]) -> CorpusAnalysis:
 #     """Analyze documents with sophisticated content analysis."""
 #     # TODO: Use analysis_config for all parameters - NO hardcoded values
 #     # TODO: Perform statistical analysis (TF-IDF, vocabulary richness, entropy)
@@ -74,7 +67,7 @@ class DomainFlow:
 #     # TODO: Return comprehensive analysis with confidence intervals
 #     pass
 
-# async def generate_domain_config(self, analysis_results: Dict[str, Any]) -> Dict[str, Any]:
+# async def generate_domain_config(self, analysis_results: Dict[str, Any]) -> DomainConfig:
 #     """Generate domain configuration from analysis results."""
 #     # TODO: Use analysis results to determine optimal parameters
 #     # TODO: Generate extraction thresholds from statistical analysis
@@ -84,7 +77,7 @@ class DomainFlow:
 #     # TODO: Return complete domain configuration with metadata
 #     pass
 
-# async def validate_workflow_execution(self, execution_results: Dict[str, Any]) -> Dict[str, Any]:
+# async def validate_workflow_execution(self, execution_results: Dict[str, Any]) -> WorkflowResult:
 #     """Validate domain workflow execution quality and completeness."""
 #     # TODO: Check configuration generation completeness
 #     # TODO: Validate all parameters have learned sources
@@ -94,7 +87,7 @@ class DomainFlow:
 #     # TODO: Return validation results with any issues found
 #     pass
 
-# async def handle_domain_flow_errors(self, error: Exception, context: Dict[str, Any]) -> Dict[str, Any]:
+# async def handle_domain_flow_errors(self, error: Exception, context: Dict[str, Any]) -> DomainConfig:
 #     """Handle domain flow errors with graceful degradation."""
 #     # TODO: Log domain flow error with execution context
 #     # TODO: Attempt recovery using cached configurations
@@ -104,7 +97,7 @@ class DomainFlow:
 #     # TODO: Return error handling results with recovery status
 #     pass
 
-# async def monitor_flow_performance(self) -> Dict[str, Any]:
+# async def monitor_flow_performance(self) -> WorkflowResult:
 #     """Monitor domain flow performance and optimization opportunities."""
 #     # TODO: Track configuration generation speed and quality
 #     # TODO: Monitor corpus analysis performance and accuracy

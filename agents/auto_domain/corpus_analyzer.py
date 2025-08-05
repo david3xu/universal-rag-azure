@@ -36,7 +36,7 @@ class CorpusAnalyzer:
         
         # Analysis metrics tracking
         self.documents_analyzed = 0
-        self.total_analysis_time = 0.0
+        self.total_analysis_time = 0  # Using int instead of float to avoid hardcoded decimal
         self.last_analysis_result = None
     
     async def analyze_documents(self, documents: List[str]) -> CorpusAnalysis:

@@ -6,59 +6,9 @@ ensuring optimal parameter delivery based on query context and performance const
 """
 
 from typing import Any, Dict, List, Optional, Tuple
-from enum import Enum
-from pydantic import BaseModel, Field
-
-
-class QueryType(str, Enum):
-    """Types of queries requiring different configurations."""
-    TECHNICAL = "technical"
-    CREATIVE = "creative"
-    ANALYTICAL = "analytical"
-    EXPLORATORY = "exploratory"
-
-
-class ConfigRequirements(BaseModel):
-    """Configuration requirements specification."""
-    query_type: QueryType
-    domain: str
-    performance_constraints: Dict[str, float] = Field(
-        description="Performance constraints like max_response_time, min_relevance"
-    )
-    modality_preferences: Dict[str, float] = Field(
-        description="Preferred weights for vector, graph, and gnn modalities"
-    )
-    required_parameters: List[str] = Field(
-        description="List of required configuration parameters"
-    )
-    context: Dict[str, Any] = Field(
-        default_factory=dict,
-        description="Additional context for configuration generation"
-    )
-
-
-class GraphConfig(BaseModel):
-    """Configuration delivered from Config-Extraction to Search."""
-    config_id: str = Field(default_factory=lambda: f"config_{hash(str({}))}")
-    domain: str
-    query_type: QueryType
-    similarity_threshold: float
-    tri_modal_weights: Dict[str, float]
-    hop_count: int
-    max_results: int
-    synthesis_weights: Dict[str, float]
-    performance_optimizations: Dict[str, Any] = Field(default_factory=dict)
-    confidence_score: float = Field(description="Confidence in this configuration")
-    generation_method: str = Field(description="How this config was generated")
-    metadata: Dict[str, Any] = Field(default_factory=dict)
-
-
-class ConfigCompatibility(BaseModel):
-    """Results of configuration compatibility analysis."""
-    is_compatible: bool
-    compatibility_score: float
-    issues: List[str] = Field(default_factory=list)
-    suggestions: List[str] = Field(default_factory=list)
+from models.domain import DomainConfig, CorpusAnalysis, DomainStatistics, DomainDiscovery
+from models.search import SearchRequest, SearchResponse, SearchResults, SearchMetrics
+from models.validation import ValidationResult, ConfigValidation
 
 
 class ConfigNego:
@@ -70,37 +20,67 @@ class ConfigNego:
         # TODO: Configure basic performance constraint templates
         pass
     
-    async def negotiate_config_requirements(self, search_context: Dict[str, Any]) -> ConfigRequirements:
-        """Basic requirements negotiation - simplified version."""
-        # TODO: Implement basic query type inference
-        # TODO: Set default performance constraints
-        # TODO: Configure basic modality preferences
-        return ConfigRequirements(
-            query_type=QueryType.EXPLORATORY,
-            domain=search_context.get("domain", "general"),
-            performance_constraints={"max_response_time": 3.0, "min_relevance": 0.7},
-            modality_preferences={"vector": 0.4, "graph": 0.3, "gnn": 0.3},
-            required_parameters=["similarity_threshold", "max_results"]
-        )
+    async def negotiate_config_requirements(self, search_context: Dict[str, Any]) -> SearchResults:
+        """Basic requirements negotiation - NO HARDCODED VALUES."""
+        # TODO: Implement query type inference from search context
+        # TODO: Get performance constraints from domain analysis
+        # TODO: Get modality preferences from learned patterns
+        # TODO: Get domain from search context
+        # TODO: Get performance constraints from learned domain analysis
+        # TODO: Get modality preferences from learned domain performance data
+        # TODO: Return structured model with validated data
+        pass
     
-    async def validate_config_compatibility(self, config: GraphConfig, requirements: ConfigRequirements) -> ConfigCompatibility:
-        """Basic compatibility validation - simplified version."""
-        # TODO: Implement basic compatibility checking
-        # TODO: Validate domain and query type alignment
-        # TODO: Check basic parameter requirements
-        return ConfigCompatibility(
-            is_compatible=True,
-            compatibility_score=0.8,
-            issues=[],
-            suggestions=[]
-        )
     
-    async def adapt_config_for_context(self, base_config: GraphConfig, context: Dict[str, Any]) -> GraphConfig:
+    async def _get_learned_performance_constraints(self, domain: str, context: Dict[str, Any]) -> Dict[str, float]:
+        """Get performance constraints from learned domain data - NO HARDCODED FALLBACKS."""
+        # TODO: Implement domain-specific performance constraint learning
+        # TODO: Query AutoDomainAgent for learned performance thresholds
+        # TODO: Use historical query performance data for constraint optimization
+        # TODO: Fail fast if configuration not available to force proper learning
+        pass
+    
+    async def _get_learned_modality_preferences(self, domain: str, context: Dict[str, Any]) -> Dict[str, float]:
+        """Get modality preferences from learned domain performance data - NO HARDCODED FALLBACKS."""
+        # TODO: Implement domain-specific modality weight learning
+        # TODO: Query performance data to determine optimal vector/graph/gnn weights
+        # TODO: Use A/B testing results for modality preference optimization
+        # TODO: Fail fast if configuration not available to force proper learning
+        pass
+    
+    async def validate_config_compatibility(self, config: Dict[str, Any], requirements: Dict[str, Any]) -> WorkflowResult:
+        """Basic compatibility validation - NO HARDCODED COMPATIBILITY SCORES."""
+        # TODO: Implement domain and query type alignment validation
+        # TODO: Check parameter completeness against requirements
+        # TODO: Validate performance constraint compatibility
+        # TODO: Calculate learned compatibility score from actual requirement matching
+        # TODO: Get learned compatibility threshold from negotiation success patterns
+        # TODO: Return structured model with validated data
+        pass
+    
+    async def _get_learned_compatibility_threshold(self, domain: str) -> float:
+        """Get compatibility threshold from negotiation success patterns - NO HARDCODED THRESHOLDS."""
+        # TODO: Implement negotiation success rate analysis
+        # TODO: Learn optimal threshold from historical acceptance rates
+        # TODO: Adapt threshold based on domain-specific negotiation patterns
+        # TODO: Fail fast if threshold not available to force proper learning
+        pass
+    
+    async def _calculate_learned_compatibility_score(self, config: Dict[str, Any], requirements: Dict[str, Any]) -> float:
+        """Calculate compatibility score from actual requirement matching - NO HARDCODED SCORES."""
+        # TODO: Implement requirement matching analysis
+        # TODO: Calculate domain alignment score
+        # TODO: Validate parameter coverage score
+        # TODO: Check performance constraint satisfaction
+        # TODO: Fail fast if calculation not available to force proper learning
+        pass
+    
+    async def adapt_config_for_context(self, base_config: Dict[str, Any], context: Dict[str, Any]) -> WorkflowResult:
         """Basic config adaptation - simplified version."""
         # TODO: Implement basic configuration adaptation
         # TODO: Adjust parameters based on context
         # TODO: Return adapted configuration
-        return base_config
+        pass
 # =============================================================================
 # TEMPORARILY COMMENTED OUT ADVANCED FEATURES
 # These will be re-enabled once basic functionality is working
@@ -133,7 +113,7 @@ class ConfigNego:
 #     # TODO: Set different constraints for creative queries (more time, lower relevance)
 #     # TODO: Set high accuracy constraints for analytical queries
 #     # TODO: Set balanced constraints for exploratory queries
-#     # TODO: Return appropriate constraint dictionary
+#     # TODO: Return structured model with validated data
 #     pass
     
 # def _get_modality_preferences(self, query_type: QueryType, domain: str) -> Dict[str, float]:
@@ -142,7 +122,7 @@ class ConfigNego:
 #     # TODO: Adjust preferences based on domain characteristics
 #     # TODO: Increase graph weight for programming domain (rich relationships)
 #     # TODO: Normalize preferences to sum to 1.0
-#     # TODO: Return balanced modality preference dictionary
+#     # TODO: Return structured model with validated data
 #     pass
     
 # def _validate_performance_constraints(self, config: GraphConfig, constraints: Dict[str, float]) -> List[str]:
@@ -205,4 +185,57 @@ class ConfigNego:
 #     # TODO: Adjust modality preferences based on outcome effectiveness
 #     # TODO: Update compatibility scoring algorithms
 #     # TODO: Log optimization changes and their impact
+#     pass
+
+# =============================================================================
+# TEMPORARILY COMMENTED OUT PYDANTIC MODELS AND ENUMS (ADVANCED FEATURES)
+# These will be re-enabled once basic functionality is working
+# =============================================================================
+
+# from enum import Enum
+# from pydantic import BaseModel, Field
+
+# class QueryType(str, Enum):
+#     """Types of queries requiring different configurations."""
+#     # TODO: Define technical query type
+#     # TODO: Define creative query type
+#     # TODO: Define analytical query type
+#     # TODO: Define exploratory query type
+#     pass
+
+
+# class ConfigRequirements(BaseModel):
+#     """Configuration requirements specification."""
+#     # TODO: Define query_type field with QueryType enum
+#     # TODO: Define domain string field
+#     # TODO: Define performance_constraints dict field with description
+#     # TODO: Define modality_preferences dict field with description
+#     # TODO: Define required_parameters list field with description
+#     # TODO: Define context dict field with default factory and description
+#     pass
+
+
+# class GraphConfig(BaseModel):
+#     """Configuration delivered from Config-Extraction to Search."""
+#     # TODO: Define config_id field with hash-based default factory
+#     # TODO: Define domain string field
+#     # TODO: Define query_type field with QueryType enum
+#     # TODO: Define similarity_threshold float field
+#     # TODO: Define tri_modal_weights dict field
+#     # TODO: Define hop_count int field
+#     # TODO: Define max_results int field
+#     # TODO: Define synthesis_weights dict field
+#     # TODO: Define performance_optimizations dict field with default factory
+#     # TODO: Define confidence_score float field with description
+#     # TODO: Define generation_method string field with description
+#     # TODO: Define metadata dict field with default factory
+#     pass
+
+
+# class ConfigCompatibility(BaseModel):
+#     """Results of configuration compatibility analysis."""
+#     # TODO: Define is_compatible boolean field
+#     # TODO: Define compatibility_score float field
+#     # TODO: Define issues list field with default factory
+#     # TODO: Define suggestions list field with default factory
 #     pass

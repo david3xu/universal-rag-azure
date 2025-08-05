@@ -13,13 +13,11 @@ async def run_full_pipeline():
     # TODO: Implement basic pipeline orchestration
     # TODO: Set up basic logging and monitoring
     # TODO: Run basic pipeline phases in sequence
-    print("🚀 Starting Universal RAG pipeline...")
-    
     # TODO: Execute basic domain configuration phase
     # TODO: Run basic knowledge extraction phase
     # TODO: Execute basic search optimization phase
     # TODO: Validate basic pipeline results
-    print("✅ Pipeline completed successfully")
+    pass
 
 # =============================================================================
 # TEMPORARILY COMMENTED OUT ADVANCED FEATURES

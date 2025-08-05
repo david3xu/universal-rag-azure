@@ -1,5 +1,18 @@
 # Dual-Graph Design
 
+## Table of Contents
+
+- [Overview](#overview)
+- [Components](#components)
+  - [Auto Domain Agent](#auto-domain-agent)
+  - [Universal Search Agent](#universal-search-agent)
+  - [Knowledge Generation Agent](#knowledge-generation-agent)
+  - [Workflow Bridge](#workflow-bridge)
+- [Communication Flow](#communication-flow)
+- [State Management](#state-management)
+- [Configuration Learning](#configuration-learning)
+- [Performance Optimization](#performance-optimization)
+
 ## Overview
 
 The Universal RAG system uses a dual-graph architecture where:

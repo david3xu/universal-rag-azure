@@ -5,7 +5,13 @@ Handles errors across the agent system.
 """
 
 import logging
+import time
 from typing import Any, Dict, Optional
+from models.knowledge import KnowledgeExtraction, EntityResult, RelationshipResult, KnowledgeValidation
+from models.azure import AzureServiceResponse, EmbeddingResult, SearchResult, ServiceHealth
+from models.workflow import WorkflowContext, WorkflowResult, NodeExecution
+from models.validation import ValidationResult, ConfigValidation
+from models.search import SearchRequest, SearchResponse, SearchResults, SearchMetrics
 
 
 class ErrorHandler:
@@ -15,32 +21,76 @@ class ErrorHandler:
         """Initialize basic error handler."""
         # TODO: Basic initialization - set up error handling
         # TODO: Configure basic logging and error tracking
+        
+        # === BASIC IMPLEMENTATION BELOW ===
+        # Set up basic logging
         self.logger = logging.getLogger(__name__)
+        self.logger.setLevel(logging.INFO)
+        
+        # Basic error tracking
+        self.error_count = 0
+        self.last_errors = []
     
     async def handle_agent_error(self, agent_name: str, error: Exception, context: Optional[Dict[str, Any]] = None) -> None:
         """Basic agent error handling - simplified version."""
         # TODO: Implement basic error logging and handling
         # TODO: Log error with agent context
         # TODO: Provide basic error recovery
-        self.logger.error(f"Error in {agent_name}: {error}")
+        
+        # === BASIC IMPLEMENTATION BELOW ===
+        # Basic error logging with agent context
+        error_msg = f"Agent '{agent_name}' error: {str(error)}"
         if context:
-            self.logger.error(f"Context: {context}")
+            error_msg += f" | Context: {context}"
+        
+        self.logger.error(error_msg)
+        
+        # Track error for basic statistics
+        self.error_count += 1
+        self.last_errors.append({
+            "agent": agent_name,
+            "error": str(error),
+            "context": context or {},
+            "timestamp": str(time.time())
+        })
+        
+        # Keep only last 10 errors for basic tracking
+        if len(self.last_errors) > 10:
+            self.last_errors.pop(0)
     
     async def handle_workflow_error(self, workflow_name: str, error: Exception, context: Optional[Dict[str, Any]] = None) -> None:
         """Basic workflow error handling - simplified version."""
         # TODO: Implement basic workflow error handling
         # TODO: Log workflow errors with context
         # TODO: Provide basic recovery mechanisms
-        self.logger.error(f"Workflow error in {workflow_name}: {error}")
+        
+        # === BASIC IMPLEMENTATION BELOW ===
+        # Basic workflow error logging with context
+        error_msg = f"Workflow '{workflow_name}' error: {str(error)}"
         if context:
-            self.logger.error(f"Context: {context}")
+            error_msg += f" | Context: {context}"
+        
+        self.logger.error(error_msg)
+        
+        # Track workflow error for basic statistics
+        self.error_count += 1
+        self.last_errors.append({
+            "workflow": workflow_name,
+            "error": str(error),
+            "context": context or {},
+            "timestamp": str(time.time())
+        })
+        
+        # Keep only last 10 errors for basic tracking
+        if len(self.last_errors) > 10:
+            self.last_errors.pop(0)
 
 # =============================================================================
 # TEMPORARILY COMMENTED OUT ADVANCED FEATURES
 # These will be re-enabled once basic functionality is working
 # =============================================================================
 
-# async def handle_azure_service_error(self, service_name: str, error: Exception, operation: str) -> Dict[str, Any]:
+# async def handle_azure_service_error(self, service_name: str, error: Exception, operation: str) -> AzureServiceResponse:
 #     """Handle Azure service errors with intelligent retry logic."""
 #     # TODO: Identify error type (throttling, auth, network, service)
 #     # TODO: Implement exponential backoff for retryable errors
@@ -50,7 +100,7 @@ class ErrorHandler:
 #     # TODO: Return recovery status and next recommended action
 #     pass
 
-# async def handle_configuration_error(self, config_source: str, error: Exception, config_context: Dict[str, Any]) -> Dict[str, Any]:
+# async def handle_configuration_error(self, config_source: str, error: Exception, config_context: Dict[str, Any]) -> WorkflowResult:
 #     """Handle configuration errors with fallback strategies."""
 #     # TODO: Determine if error is due to missing learned configuration
 #     # TODO: Trigger configuration learning if needed
@@ -60,7 +110,7 @@ class ErrorHandler:
 #     # TODO: Return configuration recovery status
 #     pass
 
-# async def handle_extraction_error(self, document_id: str, error: Exception, extraction_context: Dict[str, Any]) -> Dict[str, Any]:
+# async def handle_extraction_error(self, document_id: str, error: Exception, extraction_context: Dict[str, Any]) -> KnowledgeExtraction:
 #     """Handle knowledge extraction errors with graceful degradation."""
 #     # TODO: Determine if document is corrupted or extraction failed
 #     # TODO: Try alternative extraction methods
@@ -70,7 +120,7 @@ class ErrorHandler:
 #     # TODO: Return partial results if some extraction succeeded
 #     pass
 
-# async def handle_search_error(self, query: str, error: Exception, search_context: Dict[str, Any]) -> Dict[str, Any]:
+# async def handle_search_error(self, query: str, error: Exception, search_context: Dict[str, Any]) -> SearchResults:
 #     """Handle search errors with fallback to alternative search modes."""
 #     # TODO: Identify which search modality failed (vector, graph, GNN)
 #     # TODO: Continue with working search modalities
@@ -80,7 +130,7 @@ class ErrorHandler:
 #     # TODO: Return partial search results with quality indicators
 #     pass
 
-# async def get_error_statistics(self) -> Dict[str, Any]:
+# async def get_error_statistics(self) -> WorkflowResult:
 #     """Get comprehensive error statistics for system health monitoring."""
 #     # TODO: Aggregate error counts by category and severity
 #     # TODO: Calculate error rates and trends over time
@@ -90,7 +140,7 @@ class ErrorHandler:
 #     # TODO: Return comprehensive error analytics
 #     pass
 
-# async def trigger_system_recovery(self, recovery_context: Dict[str, Any]) -> Dict[str, Any]:
+# async def trigger_system_recovery(self, recovery_context: Dict[str, Any]) -> WorkflowResult:
 #     """Trigger comprehensive system recovery procedures."""
 #     # TODO: Identify failed components and dependencies
 #     # TODO: Restart failed services in proper dependency order

@@ -5,46 +5,250 @@ Client for Azure Blob Storage services.
 """
 
 from typing import Dict, Any, Optional, List, AsyncIterator
+import os
+import uuid
+import time
 from azure.storage.blob.aio import BlobServiceClient
-from azure.identity.aio import DefaultAzureCredential
+from azure.storage.blob import BlobClient
+from azure.identity import DefaultAzureCredential
+from models.validation import ValidationResult, ConfigValidation
+from models.knowledge import KnowledgeExtraction, EntityResult, RelationshipResult, KnowledgeValidation
+from models.azure import AzureServiceResponse, EmbeddingResult, SearchResult, ServiceHealth
+from models.workflow import WorkflowResult
 
 
 class StorageClient:
-    """Basic storage client - simplified for core functionality."""
+    """Real Azure Blob Storage client for document management."""
     
     def __init__(self):
-        """Initialize basic storage client."""
-        # TODO: Basic initialization - set up Azure Blob Storage client
-        # TODO: Configure authentication with DefaultAzureCredential
-        pass
+        """Initialize real Azure Blob Storage client."""
+        # TODO: Advanced document processing and lifecycle management features
+        # TODO: Implement comprehensive storage analytics and monitoring
+        
+        # === REAL AZURE BLOB STORAGE CLIENT IMPLEMENTATION ===
+        # Load configuration from environment
+        self.account_name = os.getenv("AZURE_STORAGE_ACCOUNT")
+        self.container_name = os.getenv("AZURE_STORAGE_CONTAINER", "universal-rag-data")
+        
+        if not self.account_name:
+            raise ValueError("AZURE_STORAGE_ACCOUNT must be set")
+        
+        # Construct account URL
+        self.account_url = f"https://{self.account_name}.blob.core.windows.net"
+        
+        # Authentication - try managed identity first, then DefaultAzureCredential
+        use_managed_identity = os.getenv("USE_MANAGED_IDENTITY", "false").lower() == "true"
+        if use_managed_identity:
+            credential = DefaultAzureCredential()
+        else:
+            credential = DefaultAzureCredential()
+        
+        # Initialize real Azure Blob Storage client
+        self.blob_service_client = BlobServiceClient(
+            account_url=self.account_url,
+            credential=credential
+        )
+        
+        # Metrics tracking
+        self.upload_count = 0
+        self.download_count = 0
+        self.list_count = 0
     
-    async def upload_blob(self, container_name: str, blob_name: str, data: bytes) -> Dict[str, Any]:
-        """Basic blob upload - simplified version."""
-        # TODO: Implement basic blob upload functionality
-        # TODO: Upload data to specified container and blob name
-        # TODO: Return upload result with basic metadata
-        return {"uploaded": False, "message": "Basic upload placeholder"}
+    async def upload_blob(self, container_name: str, blob_name: str, data: bytes) -> WorkflowResult:
+        """Upload blob using real Azure Blob Storage service."""
+        # TODO: Implement advanced upload features (chunked, resumable uploads)
+        # TODO: Add support for blob metadata and custom properties
+        # TODO: Implement upload progress tracking and monitoring
+        
+        # === REAL AZURE BLOB STORAGE UPLOAD IMPLEMENTATION ===
+        from datetime import datetime
+        start_time = time.time()
+        
+        try:
+            # Get blob client for the specific blob
+            blob_client = self.blob_service_client.get_blob_client(
+                container=container_name,
+                blob=blob_name
+            )
+            
+            # Upload the blob data
+            await blob_client.upload_blob(
+                data=data,
+                overwrite=True,  # Allow overwriting existing blobs
+                content_type="application/octet-stream"  # Default content type
+            )
+            
+            # Track metrics
+            self.upload_count += 1
+            processing_time = time.time() - start_time
+            
+            return WorkflowResult(
+                workflow_id=str(uuid.uuid4()),
+                workflow_name="blob_upload",
+                success=True,
+                final_output={
+                    "container_name": container_name,
+                    "blob_name": blob_name,
+                    "size_bytes": len(data),
+                    "upload_count": self.upload_count,
+                    "account_name": self.account_name
+                },
+                total_time=processing_time,
+                completed_at=datetime.now(),
+                error_summary=None
+            )
+            
+        except Exception as e:
+            # Handle Azure Blob Storage errors
+            error_time = time.time() - start_time
+            
+            return WorkflowResult(
+                workflow_id=str(uuid.uuid4()),
+                workflow_name="blob_upload",
+                success=False,
+                final_output={"error": str(e)},
+                total_time=error_time,
+                completed_at=datetime.now(),
+                error_summary=f"Blob upload failed: {str(e)}"
+            )
     
     async def download_blob(self, container_name: str, blob_name: str) -> Optional[bytes]:
-        """Basic blob download - simplified version."""
-        # TODO: Implement basic blob download functionality
-        # TODO: Download blob from specified container and name
-        # TODO: Return blob content or None if not found
-        return None  # Placeholder
+        """Download blob using real Azure Blob Storage service."""
+        # TODO: Implement advanced download features (streaming, range downloads)
+        # TODO: Add support for conditional downloads and caching
+        # TODO: Implement download progress tracking and resumption
+        
+        # === REAL AZURE BLOB STORAGE DOWNLOAD IMPLEMENTATION ===
+        try:
+            # Get blob client for the specific blob
+            blob_client = self.blob_service_client.get_blob_client(
+                container=container_name,
+                blob=blob_name
+            )
+            
+            # Check if blob exists
+            blob_exists = await blob_client.exists()
+            if not blob_exists:
+                return None
+            
+            # Download the blob content
+            download_stream = await blob_client.download_blob()
+            content = await download_stream.readall()
+            
+            # Track metrics
+            self.download_count += 1
+            
+            return content
+            
+        except Exception as e:
+            # Handle blob not found or other errors
+            if "BlobNotFound" in str(e):
+                return None
+            else:
+                raise RuntimeError(f"Blob download failed: {str(e)}") from e
     
-    async def list_documents(self, container_name: str) -> List[Dict[str, Any]]:
-        """Basic document listing - simplified version."""
-        # TODO: Implement basic document listing
-        # TODO: List all blobs in the specified container
-        # TODO: Return document list with basic metadata
-        return []  # Placeholder
+    async def list_documents(self, container_name: str, max_results: Optional[int] = None) -> List[Dict[str, Any]]:
+        """List documents using real Azure Blob Storage service."""
+        # TODO: Implement advanced listing with filters and pagination
+        # TODO: Add support for hierarchical listing and prefix filtering
+        # TODO: Implement metadata-based filtering and search
+        
+        # === REAL AZURE BLOB STORAGE LISTING IMPLEMENTATION ===
+        try:
+            # Use environment default or parameter
+            if max_results is None:
+                max_results = int(os.getenv("MAX_RESULTS_LIMIT", "50"))
+            
+            # Get container client
+            container_client = self.blob_service_client.get_container_client(container_name)
+            
+            # Check if container exists
+            container_exists = await container_client.exists()
+            if not container_exists:
+                return []  # Return empty list if container doesn't exist
+            
+            # List blobs in the container
+            blob_list = []
+            async for blob in container_client.list_blobs(include=["metadata"]):
+                blob_info = {
+                    "name": blob.name,
+                    "container": container_name,
+                    "size_bytes": blob.size,
+                    "last_modified": blob.last_modified.isoformat() if blob.last_modified else None,
+                    "content_type": blob.content_settings.content_type if blob.content_settings else "application/octet-stream",
+                    "etag": blob.etag,
+                    "metadata": blob.metadata or {}
+                }
+                blob_list.append(blob_info)
+                
+                # Respect max_results limit
+                if len(blob_list) >= max_results:
+                    break
+            
+            # Track metrics
+            self.list_count += 1
+            
+            return blob_list
+            
+        except Exception as e:
+            # Handle container not found or other errors
+            if "ContainerNotFound" in str(e):
+                return []  # Return empty list if container doesn't exist
+            else:
+                raise RuntimeError(f"Blob listing failed: {str(e)}") from e
+    
+    async def health_check(self) -> AzureServiceResponse:
+        """Real health check for Azure Blob Storage service."""
+        # TODO: Implement comprehensive health check with container validation
+        # TODO: Test storage performance and response times
+        # TODO: Validate storage account quotas and limits
+        # TODO: Check container access permissions and policies
+        
+        # === REAL AZURE BLOB STORAGE HEALTH CHECK IMPLEMENTATION ===
+        start_time = time.time()
+        request_id = str(uuid.uuid4())
+        
+        try:
+            # Test actual connectivity by listing containers
+            containers = []
+            async for container in self.blob_service_client.list_containers():
+                containers.append(container.name)
+                break  # Just test connectivity, don't list all
+            
+            # Test getting account info
+            account_info = await self.blob_service_client.get_account_information()
+            
+            # If we get here, the service is healthy
+            response_time = time.time() - start_time
+            
+            return AzureServiceResponse(
+                service_name="azure_storage",
+                operation="health_check",
+                success=True,
+                response_time=response_time,
+                request_id=request_id,
+                error_details=None
+            )
+            
+        except Exception as e:
+            # Service is unhealthy
+            response_time = time.time() - start_time
+            
+            return AzureServiceResponse(
+                service_name="azure_storage",
+                operation="health_check",
+                success=False,
+                response_time=response_time,
+                request_id=request_id,
+                error_details=f"Azure Blob Storage health check failed: {str(e)}"
+            )
 
 # =============================================================================
 # TEMPORARILY COMMENTED OUT ADVANCED FEATURES
 # These will be re-enabled once basic functionality is working
 # =============================================================================
 
-# async def process_document_batch(self, documents: List[Dict[str, Any]]) -> Dict[str, Any]:
+# async def process_document_batch(self, documents: List[Dict[str, Any]]) -> WorkflowResult:
 #     """Process multiple documents with intelligent batching."""
 #     # TODO: Determine optimal batch size based on document characteristics
 #     # TODO: Process documents in parallel with resource management
@@ -74,7 +278,7 @@ class StorageClient:
 #     # TODO: Return storage location and version identifier
 #     pass
     
-# async def manage_document_lifecycle(self, document_id: str, lifecycle_config: Dict[str, Any]) -> Dict[str, Any]:
+# async def manage_document_lifecycle(self, document_id: str, lifecycle_config: Dict[str, Any]) -> WorkflowResult:
 #     """Manage document lifecycle with retention policies."""
 #     # TODO: Apply retention policies based on document type and usage
 #     # TODO: Archive old documents to cold storage tiers
@@ -84,7 +288,7 @@ class StorageClient:
 #     # TODO: Return lifecycle management results
 #     pass
     
-# async def get_storage_analytics(self, container_name: str, time_range: Dict[str, Any]) -> Dict[str, Any]:
+# async def get_storage_analytics(self, container_name: str, time_range: Dict[str, Any]) -> WorkflowResult:
 #     """Get storage analytics and usage metrics."""
 #     # TODO: Collect storage usage statistics
 #     # TODO: Analyze document access patterns

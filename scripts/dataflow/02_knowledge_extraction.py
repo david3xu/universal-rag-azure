@@ -22,6 +22,11 @@ from azure_services.storage_client import StorageClient
 from prompt_flows.flow_mgr import FlowMgr
 from agents.supports.config_provider import ConfigProvider
 from config.params import ConfigurationNotAvailableError
+from models.knowledge import KnowledgeExtraction, EntityResult, RelationshipResult, KnowledgeValidation
+from models.azure import AzureServiceResponse, EmbeddingResult, SearchResult, ServiceHealth
+from models.workflow import WorkflowContext, WorkflowResult, NodeExecution
+from models.domain import DomainConfig, CorpusAnalysis, DomainStatistics, DomainDiscovery
+from models.validation import ValidationResult, ConfigValidation
 
 
 @dataclass
@@ -40,7 +45,7 @@ class ExtractionResult:
     errors: List[str]
 
 
-class KnowledgeExtractionOrchestrator:
+class KnowledgeOrchestrator:
     """Orchestrates comprehensive knowledge extraction with GNN training."""
     
     def __init__(self):
@@ -59,16 +64,7 @@ class KnowledgeExtractionOrchestrator:
         domain: str, 
         document_filter: Optional[str] = None
     ) -> ExtractionResult:
-        """
-        Extract comprehensive knowledge from domain documents.
-        
-        Args:
-            domain: Target domain for extraction
-            document_filter: Optional filter for specific documents
-            
-        Returns:
-            ExtractionResult with extraction statistics and metrics
-        """
+        """Extract comprehensive knowledge from domain documents."""
         # TODO: Load domain documents from storage
         # TODO: Initialize knowledge extraction workflow
         # TODO: Execute entity extraction with domain-specific patterns
@@ -85,23 +81,14 @@ class KnowledgeExtractionOrchestrator:
         documents: List[Dict[str, Any]], 
         domain: str
     ) -> List[Dict[str, Any]]:
-        """
-        Execute entity extraction using prompt flow orchestration.
-        
-        Args:
-            documents: List of documents to process
-            domain: Domain for extraction patterns
-            
-        Returns:
-            Extracted entities with confidence scores
-        """
-        # TODO: Load domain-specific entity patterns
-        # TODO: Execute entity extraction prompt flow
-        # TODO: Apply multi-method extraction (pattern, LLM, statistical)
-        # TODO: Validate entity consistency and quality
-        # TODO: Merge and deduplicate extracted entities
-        # TODO: Calculate confidence scores and quality metrics
-        # TODO: Return validated entities with metadata
+        """Execute entity extraction using prompt flow orchestration."""
+        # TODO: Use FlowMgr to execute knowledge_extract.yaml flow for entity extraction
+        # TODO: Apply entity_extract.jinja2 template with domain-specific patterns
+        # TODO: Execute centralized prompt flow combining pattern, LLM, and statistical methods
+        # TODO: Validate entity consistency through centralized flow validation steps
+        # TODO: Merge and deduplicate extracted entities using flow orchestration
+        # TODO: Calculate confidence scores from centralized flow execution metrics
+        # TODO: Return validated entities with metadata from prompt flow results
         pass
     
     async def execute_relationship_extraction(
@@ -110,24 +97,14 @@ class KnowledgeExtractionOrchestrator:
         entities: List[Dict[str, Any]], 
         domain: str
     ) -> List[Dict[str, Any]]:
-        """
-        Execute relationship extraction between identified entities.
-        
-        Args:
-            documents: Source documents
-            entities: Extracted entities
-            domain: Domain for relationship patterns
-            
-        Returns:
-            Extracted relationships with validation
-        """
-        # TODO: Load domain-specific relationship patterns
-        # TODO: Execute relationship extraction prompt flow
-        # TODO: Validate relationship consistency and logic
-        # TODO: Calculate relationship strength and confidence
-        # TODO: Resolve entity references and mapping
-        # TODO: Filter low-confidence relationships
-        # TODO: Return validated relationships with evidence
+        """Execute relationship extraction between identified entities."""
+        # TODO: Use FlowMgr to execute knowledge_extract.yaml flow for relationship extraction
+        # TODO: Apply relation_extract.jinja2 template with domain-specific relationship patterns
+        # TODO: Execute centralized prompt flow for relationship extraction and validation
+        # TODO: Calculate relationship strength through centralized flow confidence scoring
+        # TODO: Resolve entity references using flow orchestration and mapping
+        # TODO: Filter low-confidence relationships through centralized flow thresholds
+        # TODO: Return validated relationships with evidence from prompt flow execution
         pass
     
     async def construct_knowledge_graph(
@@ -135,18 +112,8 @@ class KnowledgeExtractionOrchestrator:
         entities: List[Dict[str, Any]], 
         relationships: List[Dict[str, Any]], 
         domain: str
-    ) -> Dict[str, Any]:
-        """
-        Construct and store knowledge graph in Cosmos DB.
-        
-        Args:
-            entities: Extracted entities
-            relationships: Extracted relationships
-            domain: Domain for graph organization
-            
-        Returns:
-            Graph construction statistics and metadata
-        """
+    ) -> WorkflowResult:
+        """Construct and store knowledge graph in Cosmos DB."""
         # TODO: Create graph schema for domain
         # TODO: Insert entities as graph nodes
         # TODO: Insert relationships as graph edges
@@ -160,17 +127,8 @@ class KnowledgeExtractionOrchestrator:
         self, 
         domain: str, 
         graph_stats: Dict[str, Any]
-    ) -> Dict[str, Any]:
-        """
-        Trigger automatic GNN training on extracted knowledge graph.
-        
-        Args:
-            domain: Domain for model training
-            graph_stats: Graph statistics and metadata
-            
-        Returns:
-            GNN training results and model information
-        """
+    ) -> WorkflowResult:
+        """Trigger automatic GNN training on extracted knowledge graph."""
         # TODO: Prepare graph data for GNN training
         # TODO: Configure GNN training parameters based on graph characteristics
         # TODO: Submit training job to Azure ML
@@ -186,17 +144,7 @@ class KnowledgeExtractionOrchestrator:
         relationships: List[Dict[str, Any]], 
         domain: str
     ) -> Dict[str, float]:
-        """
-        Comprehensive quality validation of extracted knowledge.
-        
-        Args:
-            entities: Extracted entities
-            relationships: Extracted relationships
-            domain: Domain for quality standards
-            
-        Returns:
-            Quality metrics and validation results
-        """
+        """Comprehensive quality validation of extracted knowledge."""
         # TODO: Validate entity extraction precision and recall
         # TODO: Check relationship logical consistency
         # TODO: Assess graph connectivity and completeness
@@ -210,15 +158,7 @@ class KnowledgeExtractionOrchestrator:
         self, 
         result: ExtractionResult
     ) -> str:
-        """
-        Generate detailed knowledge extraction report.
-        
-        Args:
-            result: Extraction result
-            
-        Returns:
-            Formatted report string
-        """
+        """Generate detailed knowledge extraction report."""
         # TODO: Create extraction statistics summary
         # TODO: Include quality metrics and distributions
         # TODO: Report graph connectivity and structure
@@ -234,16 +174,7 @@ class KnowledgeExtractionOrchestrator:
         domain: str, 
         export_format: str = "gexf"
     ) -> str:
-        """
-        Export knowledge graph in specified format.
-        
-        Args:
-            domain: Domain to export
-            export_format: Export format (gexf, graphml, json, etc.)
-            
-        Returns:
-            Path to exported graph file
-        """
+        """Export knowledge graph in specified format."""
         # TODO: Query complete knowledge graph from Cosmos DB
         # TODO: Format graph data for specified export format
         # TODO: Include entity and relationship metadata
@@ -256,74 +187,14 @@ class KnowledgeExtractionOrchestrator:
 
 async def main():
     """Main knowledge extraction workflow."""
-    logging.basicConfig(level=logging.INFO)
-    logger = logging.getLogger(__name__)
-    
     # TODO: Parse command line arguments for domain and options
     # TODO: Validate input parameters and domain availability
     # TODO: Initialize extraction orchestrator
     # TODO: Execute knowledge extraction workflow
     # TODO: Generate and display extraction report
     # TODO: Handle errors and cleanup resources
-    
-    try:
-        # Initialize orchestrator and config provider
-        orchestrator = KnowledgeExtractionOrchestrator()
-        config_provider = ConfigProvider()
-        
-        # Get domain from learned configuration (not hardcoded)
-        try:
-            domain = await config_provider.get_parameter("default_domain")
-        except:
-            # Business logic parameter - should fail fast if not learned
-            logger.error("Default domain not learned - domain analysis required before knowledge extraction")
-            raise ConfigurationNotAvailableError(
-                "Knowledge extraction requires learned domain configuration. Run domain analysis first."
-            )
-        
-        # Extract knowledge from learned domain documents
-        result = await orchestrator.extract_knowledge(
-            domain=domain,
-            document_filter=None  # Process all documents
-        )
-        
-        # Generate and display comprehensive report
-        report = await orchestrator.generate_extraction_report(result)
-        logger.info(f"Knowledge extraction completed:\n{report}")
-        
-        # Export knowledge graph if successful
-        if result.graph_nodes > 0:
-            # Get export format from configuration (not hardcoded)
-            try:
-                export_format = await config_provider.get_parameter("default_export_format")
-            except:
-                # Infrastructure parameter fallback
-                import os
-                export_format = os.getenv("DEFAULT_EXPORT_FORMAT", "gexf")
-            
-            export_path = await orchestrator.export_knowledge_graph(
-                domain=domain, 
-                export_format=export_format
-            )
-            logger.info(f"Knowledge graph exported to: {export_path}")
-        
-        # Report GNN training results
-        if result.gnn_model_id:
-            logger.info(f"GNN model trained: {result.gnn_model_id}")
-            logger.info(f"Training accuracy: {result.gnn_training_accuracy:.3f}")
-        
-        if result.errors:
-            logger.warning(f"Encountered {len(result.errors)} errors during extraction")
-            for error in result.errors:
-                logger.error(f"  - {error}")
-        
-        return 0 if not result.errors else 1
-        
-    except Exception as e:
-        logger.error(f"Knowledge extraction failed: {e}")
-        return 1
+    pass
 
 
 if __name__ == "__main__":
-    exit_code = asyncio.run(main())
-    sys.exit(exit_code)
+    asyncio.run(main())

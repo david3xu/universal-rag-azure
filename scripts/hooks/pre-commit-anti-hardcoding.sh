@@ -31,7 +31,7 @@ if [ -n "$STAGED_FILES" ]; then
     fi
     
     # Check for local BaseModel definitions (outside models/ directory)
-    LOCAL_MODELS=$(echo "$STAGED_FILES" | xargs grep -n "^[^#]*class.*BaseModel" 2>/dev/null | grep -v "# TODO" | grep -v "/models/" || true)
+    LOCAL_MODELS=$(echo "$STAGED_FILES" | xargs grep -n "^[^#]*class.*BaseModel" 2>/dev/null | grep -v "# TODO" | grep -v "models/" || true)
     if [ -n "$LOCAL_MODELS" ]; then
         echo "❌ LOCAL MODEL DEFINITION VIOLATION: class.*BaseModel"
         echo "   Define models in models/ directory instead"

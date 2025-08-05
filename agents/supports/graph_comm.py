@@ -6,44 +6,9 @@ coordination between Config-Extraction and Search graphs.
 """
 
 from typing import Any, AsyncIterator, Dict, List, Optional
-from enum import Enum
-from datetime import datetime
-from uuid import uuid4
-from pydantic import BaseModel, Field
-
-
-class MessageType(str, Enum):
-    """Types of messages exchanged between graphs."""
-    CONFIG_REQUEST = "config_request"
-    CONFIG_OFFER = "config_offer"
-    PERFORMANCE_FEEDBACK = "performance_feedback"
-    OPTIMIZATION_SUGGESTION = "optimization_suggestion"
-    STATUS_UPDATE = "status_update"
-    HANDSHAKE_INIT = "handshake_init"
-    HANDSHAKE_ACK = "handshake_ack"
-
-
-class GraphMessage(BaseModel):
-    """Message format for graph-to-graph communication."""
-    message_id: str = Field(default_factory=lambda: str(uuid4()))
-    source_graph: str
-    target_graph: str
-    message_type: MessageType
-    payload: Dict[str, Any]
-    timestamp: datetime = Field(default_factory=datetime.now)
-    requires_response: bool = False
-    correlation_id: Optional[str] = None
-
-
-class GraphStatus(BaseModel):
-    """Status information about a graph's current state."""
-    graph_id: str
-    status: str
-    domain: Optional[str] = None
-    capabilities: List[str] = []
-    config_updated: bool = False
-    performance_metrics: Dict[str, float] = {}
-    last_updated: datetime = Field(default_factory=datetime.now)
+from models.domain import DomainConfig, CorpusAnalysis, DomainStatistics, DomainDiscovery
+from models.search import SearchRequest, SearchResponse, SearchResults, SearchMetrics
+from models.validation import ValidationResult, ConfigValidation
 
 
 class GraphComm:
@@ -60,24 +25,23 @@ class GraphComm:
         # TODO: Implement basic handshake between graphs
         # TODO: Create handshake message and send
         # TODO: Return success status
-        return True  # Placeholder
+        pass
     
-    async def send_message(self, message: GraphMessage) -> Optional[GraphMessage]:
+    async def send_message(self, message: Dict[str, Any]) -> Optional[Dict[str, Any]]:
         """Basic message sending - simplified version."""
         # TODO: Implement basic message passing between graphs
         # TODO: Handle message routing and delivery
         # TODO: Return response if required
-        return None  # Placeholder
+        pass
     
-    async def listen_for_requests(self, graph_id: str) -> AsyncIterator[GraphMessage]:
+    async def listen_for_requests(self, graph_id: str) -> AsyncIterator[Dict[str, Any]]:
         """Basic message listening - simplified version."""
         # TODO: Implement basic message queue listening
         # TODO: Yield incoming messages for processing
         # TODO: Handle message reception
-        yield  # Placeholder for async iterator
-        return
+        pass
     
-    async def send_response(self, original_message: GraphMessage, response_payload: Dict[str, Any]) -> None:
+    async def send_response(self, original_message: Dict[str, Any], response_payload: Dict[str, Any]) -> None:
         """Basic response sending - simplified version."""
         # TODO: Implement basic response message creation
         # TODO: Send response to original message source
@@ -127,7 +91,7 @@ class GraphComm:
 #     # TODO: Handle cleanup errors and recovery
 #     pass
 
-# async def get_communication_metrics(self) -> Dict[str, Any]:
+# async def get_communication_metrics(self) -> WorkflowResult:
 #     """Get communication performance metrics."""
 #     # TODO: Calculate handshake success rates and latency
 #     # TODO: Track message throughput and delivery rates
@@ -145,4 +109,50 @@ class GraphComm:
 #     # TODO: Configure message filtering and validation rules
 #     # TODO: Set up dead letter queue for failed messages
 #     # TODO: Log routing configuration changes
+#     pass
+
+# =============================================================================
+# TEMPORARILY COMMENTED OUT PYDANTIC MODELS AND ENUMS (ADVANCED FEATURES)
+# These will be re-enabled once basic functionality is working
+# =============================================================================
+
+# from enum import Enum
+# from datetime import datetime
+# from uuid import uuid4
+# from pydantic import BaseModel, Field
+
+# class MessageType(str, Enum):
+#     """Types of messages exchanged between graphs."""
+#     # TODO: Define config request message type
+#     # TODO: Define config offer message type
+#     # TODO: Define performance feedback message type
+#     # TODO: Define optimization suggestion message type
+#     # TODO: Define status update message type
+#     # TODO: Define handshake init message type
+#     # TODO: Define handshake ack message type
+#     pass
+
+
+# class GraphMessage(BaseModel):
+#     """Message format for graph-to-graph communication."""
+#     # TODO: Define message_id field with UUID factory
+#     # TODO: Define source_graph field
+#     # TODO: Define target_graph field
+#     # TODO: Define message_type field with enum
+#     # TODO: Define payload field with Any type
+#     # TODO: Define timestamp field with datetime factory
+#     # TODO: Define requires_response boolean field
+#     # TODO: Define correlation_id optional field
+#     pass
+
+
+# class GraphStatus(BaseModel):
+#     """Status information about a graph's current state."""
+#     # TODO: Define graph_id field
+#     # TODO: Define status field
+#     # TODO: Define domain optional field
+#     # TODO: Define capabilities list field
+#     # TODO: Define config_updated boolean field
+#     # TODO: Define performance_metrics dict field
+#     # TODO: Define last_updated datetime field
 #     pass

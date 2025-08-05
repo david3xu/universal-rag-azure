@@ -6,27 +6,33 @@ Main agent for automatic domain configuration generation.
 
 from pydantic_ai import Agent
 from typing import Dict, Any
+from models.domain import CorpusAnalysis, DomainConfig
+from models.knowledge import KnowledgeExtraction, EntityResult, RelationshipResult, KnowledgeValidation
+from models.azure import AzureServiceResponse, EmbeddingResult, SearchResult, ServiceHealth
+from models.workflow import WorkflowContext, WorkflowResult, NodeExecution
+from models.domain import DomainConfig, CorpusAnalysis, DomainStatistics, DomainDiscovery
+from models.validation import ValidationResult, ConfigValidation
+from models.search import SearchRequest, SearchResponse, SearchResults, SearchMetrics
 
 
 class AutoDomainAgent:
     """Basic domain agent - simplified for core functionality."""
     
     def __init__(self):
-        """Initialize basic domain agent."""
-        # TODO: Basic initialization - set up minimal required components
+        """Initialize basic domain agent with centralized prompt flow integration."""
+        # TODO: Initialize FlowMgr for centralized domain analysis workflow execution
+        # TODO: Set up PromptComposer for domain-specific prompt generation
+        # TODO: Configure domain_config.yaml flow integration
+        # TODO: Initialize domain analysis tools with flow dependencies
         pass
     
-    async def analyze_corpus(self, domain_path: str) -> Dict[str, Any]:
+    async def analyze_corpus(self, domain_path: str) -> CorpusAnalysis:
         """Basic corpus analysis - simplified version."""
-        # TODO: Implement basic corpus analysis
-        # TODO: Scan documents in domain_path
-        # TODO: Extract basic domain characteristics
-        # TODO: Return domain analysis results
-        return {
-            "domain": "default",
-            "analysis_complete": True,
-            "message": "Basic domain analysis placeholder"
-        }
+        # TODO: Implement basic corpus analysis using CorpusAnalysis model
+        # TODO: Scan documents in domain_path and collect statistics
+        # TODO: Extract basic domain characteristics using centralized prompt flows
+        # TODO: Return domain analysis results as CorpusAnalysis structured model
+        pass
 
 
 # =============================================================================
@@ -41,7 +47,7 @@ class AutoDomainAgent:
 #     # TODO: Set up handshake protocol for config negotiation
 #     pass
 
-# async def learn_patterns(self, corpus_analysis: Dict[str, Any]) -> Dict[str, Any]:
+# async def learn_patterns(self, corpus_analysis: Dict[str, Any]) -> CorpusAnalysis:
 #     """Learn domain-specific patterns from corpus analysis."""
 #     # TODO: Use PatternLearner for hybrid LLM+statistical pattern extraction
 #     # TODO: Generate learned thresholds (similarity, processing, quality)
@@ -50,7 +56,7 @@ class AutoDomainAgent:
 #     # TODO: Return learned patterns with confidence scores
 #     pass
 
-# async def generate_config(self, patterns: Dict[str, Any]) -> Dict[str, Any]:
+# async def generate_config(self, patterns: Dict[str, Any]) -> WorkflowResult:
 #     """Generate zero-hardcoded configuration from learned patterns."""
 #     # TODO: Use ConfigBuilder to create adaptive parameters
 #     # TODO: Integrate performance constraints (response time, accuracy targets)

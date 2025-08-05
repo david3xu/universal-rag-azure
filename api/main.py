@@ -16,126 +16,78 @@ import logging
 import time
 import asyncio
 from typing import Dict, Any
+from models.azure import AzureServiceResponse, EmbeddingResult, SearchResult, ServiceHealth
+from models.workflow import WorkflowContext, WorkflowResult, NodeExecution
+from models.domain import DomainConfig, CorpusAnalysis, DomainStatistics, DomainDiscovery
+from models.validation import ValidationResult, ConfigValidation
+from models.search import SearchRequest, SearchResponse, SearchResults, SearchMetrics
 
-# Initialize config provider for infrastructure parameters
-config_provider = ConfigProvider()
+# TODO: Initialize config provider for infrastructure parameters
+# config_provider = ConfigProvider()
 
 # Initialize app with configuration from environment (not hardcoded)
 async def create_app() -> FastAPI:
     """Create FastAPI app with learned configuration."""
-    try:
-        api_version = await config_provider.get_parameter("api_version")
-    except:
-        # Infrastructure parameter fallback to environment
-        import os
-        api_version = os.getenv("API_VERSION", "0.1.0")
-    
-    app = FastAPI(
-        title="Universal RAG Azure",
-        description="Intelligent dual-graph RAG system with zero hardcoded values", 
-        version=api_version
-    )
-    
+    # TODO: Get API version from config provider without hardcoded fallbacks
+    # TODO: Create FastAPI app with learned configuration parameters
     # TODO: Include routers once implemented
-    # api_prefix = f"/api/v{api_version.split('.')[0]}"
-    # app.include_router(search_router, prefix=api_prefix)
-    
-    return app
-
-# Create app instance
-try:
-    # Try to get event loop
-    loop = asyncio.get_event_loop()
-    if loop.is_running():
-        # If loop is running, create app directly (testing scenario)
-        import os
-        api_version = os.getenv("API_VERSION", "0.1.0")
-        app = FastAPI(
-            title="Universal RAG Azure",
-            description="Intelligent dual-graph RAG system with zero hardcoded values",
-            version=api_version
-        )
-        # TODO: Include search router once implemented
-        # app.include_router(search_router, prefix=f"/api/v{api_version.split('.')[0]}")
-    else:
-        # Normal startup
-        app = loop.run_until_complete(create_app())
-except RuntimeError:
-    # No event loop, create one
-    app = asyncio.run(create_app())
-
-
-@app.on_event("startup")
-async def startup():
-    """Initialize application with comprehensive Azure service validation."""
-    # TODO: Initialize all Azure service clients with health validation
-    # TODO: Validate agent system readiness and configuration
-    # TODO: Set up performance monitoring and metrics collection
-    # TODO: Initialize anti-hardcoding enforcement validation
-    # TODO: Configure logging and error handling systems
-    # TODO: Validate workflow communication and state persistence
+    # TODO: Return configured FastAPI app
     pass
 
+# TODO: Create app instance with proper async initialization
+# TODO: Handle event loop scenarios appropriately
+# TODO: Initialize FastAPI app through create_app function
+# TODO: Create app instance with proper initialization
+# app = FastAPI()
 
-@app.on_event("shutdown")
-async def shutdown():
-    """Clean shutdown with resource cleanup."""
-    # TODO: Close all Azure service connections gracefully
-    # TODO: Save workflow states and configuration cache
-    # TODO: Clean up temporary resources and sessions
-    # TODO: Log shutdown status and performance metrics
-    pass
+# TODO: Define startup event handler
+# @app.on_event("startup")
+# async def startup():
+#     """Initialize application with comprehensive Azure service validation."""
+#     # TODO: Initialize all Azure service clients with health validation
+#     # TODO: Validate agent system readiness and configuration
+#     # TODO: Set up performance monitoring and metrics collection
+#     # TODO: Initialize anti-hardcoding enforcement validation
+#     # TODO: Configure logging and error handling systems
+#     # TODO: Validate workflow communication and state persistence
+#     pass
 
-
-@app.get("/")
-async def root():
-    """Root endpoint with system status."""
-    # TODO: Include dynamic system status and health indicators
-    # TODO: Add configuration learning status and domain coverage
-    # TODO: Include performance metrics and optimization recommendations
-    # TODO: Show agent readiness and communication status
-    
-    # Get version from infrastructure parameters (not hardcoded)
-    try:
-        api_version = await config_provider.get_parameter("api_version")
-    except:
-        # Infrastructure parameter fallback to environment
-        import os
-        api_version = os.getenv("API_VERSION", "development")
-    
-    return {
-        "message": "Universal RAG Azure",
-        "version": api_version,
-        "architecture": "dual-graph",
-        "features": ["intelligent configuration", "zero hardcoded values"]
-    }
+# TODO: Define shutdown event handler
+# @app.on_event("shutdown")
+# async def shutdown():
+#     """Clean shutdown with resource cleanup."""
+#     # TODO: Close all Azure service connections gracefully
+#     # TODO: Save workflow states and configuration cache
+#     # TODO: Clean up temporary resources and sessions
+#     # TODO: Log shutdown status and performance metrics
+#     pass
 
 
-@app.get("/health")
-async def health():
-    """Comprehensive health check with Azure service validation."""
-    # TODO: Check Azure OpenAI service connectivity and health
-    # TODO: Validate Azure Cognitive Search index status
-    # TODO: Test Azure Cosmos DB graph database connectivity
-    # TODO: Check Azure Blob Storage accessibility
-    # TODO: Validate agent system readiness and communication
-    # TODO: Test configuration learning and cache systems
-    # TODO: Return detailed health status with service-specific metrics
-    return {"status": "healthy", "system": "universal-rag-azure"}
+# TODO: Define root endpoint with dynamic system status
+# TODO: Include configuration learning status and domain coverage
+# TODO: Include performance metrics and optimization recommendations
+# TODO: Show agent readiness and communication status
+# TODO: Get version from config provider without hardcoded fallbacks
+
+
+# TODO: Define health endpoint with comprehensive Azure service validation
+# TODO: Check Azure OpenAI service connectivity and health
+# TODO: Validate Azure Cognitive Search index status
+# TODO: Test Azure Cosmos DB graph database connectivity
+# TODO: Check Azure Blob Storage accessibility
+# TODO: Validate agent system readiness and communication
+# TODO: Test configuration learning and cache systems
+# TODO: Return detailed health status with service-specific metrics
 
 
 # Advanced endpoints moved to bottom
 
 
 # Basic middleware only - advanced features moved to bottom
-@app.middleware("http")
-async def basic_logging_middleware(request: Request, call_next):
-    """Basic request timing middleware."""
-    start_time = time.time()
-    response = await call_next(request)
-    process_time = time.time() - start_time
-    response.headers["X-Process-Time"] = str(process_time)
-    return response
+# TODO: Define HTTP middleware for request timing and logging
+# TODO: Implement request timing without hardcoded header names
+# TODO: Add comprehensive request/response logging
+# TODO: Include performance monitoring and metrics collection
 
 
 # =============================================================================

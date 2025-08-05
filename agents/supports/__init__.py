@@ -8,11 +8,11 @@ and dual-graph communication components.
 from .config_provider import ConfigProvider
 from .state_bridge import StateBridge
 from .enforcement import ConfigEnforcement
-from .cache_mgr import CacheManager
+from .cache import CacheManager
 from .error_handler import ErrorHandler
 from .ai_provider import AIProvider
 from .graph_comm import GraphComm, GraphMessage, GraphStatus
-from .config_nego import ConfigNego, ConfigRequirements, GraphConfig
+from .negotiator import ConfigNego, ConfigRequirements, GraphConfig
 from .learn_feedback import LearnFeedback, PerformanceMetrics, ConfigFeedback
 from .perf_monitor import PerfMonitor, ConfigPerformanceInsights
 

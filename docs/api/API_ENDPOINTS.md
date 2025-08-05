@@ -1,29 +1,80 @@
-# API Endpoints Documentation
+# API Endpoints Documentation - TODO State
+
+**🚧 Current State: TODO-Driven Development Phase**
+
+## Table of Contents
+
+- [Overview](#overview)
+- [Current Implementation Status](#current-implementation-status)
+- [Base URL (Design Specification)](#base-url-design-specification)
+- [Authentication (TODO-Guided Implementation)](#authentication-todo-guided-implementation)
+- [API Endpoints (TODO-Driven Specifications)](#api-endpoints-todo-driven-specifications)
+- [Health Check (TODO-Guided Implementation)](#health-check-todo-guided-implementation)
+- [Search Endpoints](#search-endpoints)
+  - [POST /api/search](#post-apisearch)
+  - [POST /api/search/stream](#post-apisearchstream)
+  - [GET /api/search/domains](#get-apisearchdomains)
+- [Configuration Endpoints](#configuration-endpoints)
+  - [GET /api/config/domain/{domain}](#get-apiconfigdomaindomain)
+  - [POST /api/config/optimize](#post-apiconfigoptimize)
+- [Domain Intelligence Endpoints](#domain-intelligence-endpoints)
+  - [POST /api/domain/analyze](#post-apidomainanalyze)
+  - [GET /api/domain/analyze/{analysis_id}/progress](#get-apidomainanalyzeanalysis_idprogress)
+- [Knowledge Extraction Endpoints](#knowledge-extraction-endpoints)
+  - [POST /api/knowledge/extract](#post-apiknowledgeextract)
+- [Performance Monitoring Endpoints](#performance-monitoring-endpoints)
+  - [GET /api/performance/insights](#get-apiperformanceinsights)
+  - [POST /api/performance/feedback](#post-apiperformancefeedback)
+- [Error Responses](#error-responses)
+- [Rate Limiting](#rate-limiting)
+- [WebSocket Support](#websocket-support)
+- [SDK Support](#sdk-support)
 
 ## Overview
 
-The Azure Intelligent RAG system provides RESTful API endpoints for dual-graph workflow operations, including domain analysis, knowledge extraction, and intelligent search.
+**⚠️ API endpoints are currently in TODO-only state**
 
-## Base URL
+The Azure Intelligent RAG system is designed to provide RESTful API endpoints for dual-graph workflow operations. **All endpoints are currently implemented as TODOs** with comprehensive implementation guidance.
+
+## Current Implementation Status
+
+- ✅ **Endpoint definitions**: Documented and designed
+- ⚠️ **Implementation**: All endpoints return TODO placeholders
+- ⚠️ **Functionality**: None functional until TODOs are implemented
+- ✅ **Pre-commit hooks**: Enforce zero-hardcoded-values in implementation
+
+## Base URL (Design Specification)
 
 ```
-http://localhost:8000  # Development
-https://your-app.azurewebsites.net  # Production
+http://localhost:8000  # Development (NOT FUNCTIONAL - TODO state)
+https://your-app.azurewebsites.net  # Production (NOT FUNCTIONAL - TODO state)
 ```
 
-## Authentication
+**⚠️ Current Status**: API server will not start until TODOs are implemented
 
-The API uses Azure Active Directory authentication:
+## Authentication (TODO-Guided Implementation)
+
+**Design**: Azure Active Directory authentication
+**Current State**: TODO-driven implementation
 
 ```http
+# PLANNED - Not yet implemented
 Authorization: Bearer <your-jwt-token>
 ```
 
-## Health Check
+## API Endpoints (TODO-Driven Specifications)
+
+**⚠️ All endpoints below are DESIGN SPECIFICATIONS**
+- Current implementation state: TODOs only
+- Endpoints will return placeholder responses until implemented
+- Each endpoint has comprehensive TODO guidance in source code
+
+## Health Check (TODO-Guided Implementation)
 
 ### GET /health
 
-Check system health and service availability.
+**Design**: Check system health and service availability
+**Current State**: TODO-driven implementation in `api/main.py`
 
 **Response:**
 ```json
@@ -431,6 +482,91 @@ ws.on('message', (data) => {
   const update = JSON.parse(data);
   // Handle real-time updates
 });
+```
+
+## Enterprise Monitoring Endpoints
+
+### GET /api/enterprise/health/comprehensive
+
+**Design**: Comprehensive health monitoring with Azure service status tracking
+
+**Planned Response:**
+```json
+{
+  "system_health": {
+    "overall_status": "healthy",
+    "azure_services": {
+      "openai": {"status": "healthy", "cost_tracking": "enabled"},
+      "cognitive_search": {"status": "healthy", "performance": "optimal"},
+      "cosmos_db": {"status": "healthy", "connections": 45},
+      "machine_learning": {"status": "healthy", "models_deployed": 3}
+    },
+    "memory_management": {
+      "unified_manager_status": "active",
+      "pattern_index_performance": "sub_millisecond",
+      "cache_hit_rate": 0.94
+    },
+    "anti_hardcoding_enforcement": {
+      "violations_detected": 0,
+      "compliance_score": 1.0,
+      "last_audit": "2024-01-15T10:30:00Z"
+    }
+  }
+}
+```
+
+### GET /api/enterprise/analytics/cross-modal
+
+**Design**: Cross-modal agreement analysis and performance metrics
+
+**Planned Response:**
+```json
+{
+  "cross_modal_analysis": {
+    "vector_graph_agreement": 0.87,
+    "graph_gnn_agreement": 0.91,
+    "vector_gnn_agreement": 0.83,
+    "overall_confidence": 0.88
+  },
+  "performance_metrics": {
+    "avg_response_time": 1.2,
+    "sub_3_second_compliance": 0.96,
+    "pattern_matching_speed": "O(1)",
+    "evidence_chain_coverage": 1.0
+  }
+}
+```
+
+### POST /api/enterprise/audit/evidence-trail
+
+**Design**: Evidence chain tracking for audit and compliance
+
+**Request:**
+```json
+{
+  "execution_id": "exec_789012",
+  "audit_scope": ["azure_services", "configuration", "workflow_state"],
+  "compliance_requirements": ["data_lineage", "decision_traceability"]
+}
+```
+
+**Response:**
+```json
+{
+  "evidence_chain": {
+    "execution_id": "exec_789012",
+    "audit_trail": [
+      {
+        "timestamp": "2024-01-15T10:30:00Z",
+        "component": "config_provider",
+        "action": "configuration_request",
+        "data_lineage": "domain_analysis -> learned_patterns"
+      }
+    ],
+    "compliance_status": "compliant",
+    "traceability_score": 1.0
+  }
+}
 ```
 
 ## SDK Support

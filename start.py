@@ -20,38 +20,14 @@ from azure_services.auth.base_client import BaseAzureClient
 
 async def main():
     """Main startup function with comprehensive initialization."""
-    print("🚀 Starting Universal RAG Azure...")
-    print("📋 Architecture:")
-    print("   ✅ Dual-graph workflow (Config-Extraction → Search)")
-    print("   ✅ Zero hardcoded values with runtime enforcement")
-    print("   ✅ Intelligent configuration from corpus analysis")
-    print("   ✅ Anti-hardcoding validation active")
-    print("")
-    
-    print("🔍 Basic startup validation...")
-    print("🧠 Basic agent system ready...")
-    print("☁️  Azure services configured...")
-    print("🛡️  Anti-hardcoding enforcement active...")
-    
-    # Advanced validation commented out for basic functionality
-    
-    # Get infrastructure parameters (not hardcoded)
-    config_provider = ConfigProvider()
-    try:
-        api_port = int(await config_provider.get_parameter("api_port"))
-    except:
-        # Fall back to environment variable
-        api_port = int(os.getenv("API_PORT", "8000"))
-    
-    print("")
-    print(f"🌐 Starting API server on http://localhost:{api_port}")
-    print(f"📖 API docs available at http://localhost:{api_port}/docs")
-    print(f"🔍 Health check at http://localhost:{api_port}/health")
-    
-    # Start the server with configurable port
-    config = uvicorn.Config(app, host="0.0.0.0", port=api_port, reload=True)
-    server = uvicorn.Server(config)
-    await server.serve()
+    # TODO: Print startup banner with architecture information
+    # TODO: Perform basic startup validation
+    # TODO: Initialize agent system
+    # TODO: Check Azure services configuration
+    # TODO: Validate anti-hardcoding enforcement
+    # TODO: Get API port from configuration (no hardcoded fallbacks)
+    # TODO: Start API server with learned configuration
+    pass
 
 
 if __name__ == "__main__":

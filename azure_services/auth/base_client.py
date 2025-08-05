@@ -8,6 +8,9 @@ from azure.identity import DefaultAzureCredential
 from azure.core.exceptions import ClientAuthenticationError
 from typing import Any, Dict
 import logging
+from models.validation import ValidationResult, ConfigValidation
+from models.knowledge import KnowledgeExtraction, EntityResult, RelationshipResult, KnowledgeValidation
+from models.azure import AzureServiceResponse, EmbeddingResult, SearchResult, ServiceHealth
 
 
 class BaseAzureClient:
@@ -20,8 +23,7 @@ class BaseAzureClient:
         # TODO: Configure authentication scopes for different Azure services
         # TODO: Initialize health check monitoring for authentication
         # TODO: Set up comprehensive error handling patterns
-        self.credential = DefaultAzureCredential()
-        self.logger = logging.getLogger(__name__)
+        pass
 
     async def get_credential(self) -> Any:
         """Get Azure credential with health validation."""
@@ -30,43 +32,48 @@ class BaseAzureClient:
         # TODO: Handle credential rotation gracefully
         # TODO: Log credential usage for monitoring
         # TODO: Return validated, active credential
-        return self.credential
-
-    async def test_authentication(self, service_scope: str) -> Dict[str, Any]:
-        """Test authentication against specific Azure service."""
-        # TODO: Attempt token acquisition for specified service scope
-        # TODO: Validate token format and expiration
-        # TODO: Test actual service connectivity with token
-        # TODO: Measure authentication latency and success rate
-        # TODO: Return authentication health status with metrics
         pass
 
-    async def handle_auth_error(self, error: ClientAuthenticationError, service_name: str) -> Dict[str, Any]:
-        """Handle authentication errors with retry and fallback strategies."""
-        # TODO: Log authentication error with service context
-        # TODO: Attempt credential refresh and retry
-        # TODO: Check for expired certificates or configuration issues
-        # TODO: Provide actionable error messages for troubleshooting
-        # TODO: Implement exponential backoff for retry attempts
-        # TODO: Return error handling results with recommendations
-        pass
+# =============================================================================
+# TEMPORARILY COMMENTED OUT ADVANCED FEATURES
+# These will be re-enabled once basic functionality is working
+# =============================================================================
 
-    async def get_service_health(self) -> Dict[str, Any]:
-        """Get comprehensive authentication service health."""
-        # TODO: Check credential validity across all required scopes
-        # TODO: Test connectivity to Azure identity endpoints
-        # TODO: Validate certificate status and expiration
-        # TODO: Monitor authentication success rates
-        # TODO: Check for any pending credential rotations
-        # TODO: Return comprehensive health status report
-        pass
+#     async def test_authentication(self, service_scope: str) -> WorkflowResult:
+#         """Test authentication against specific Azure service."""
+#         # TODO: Attempt token acquisition for specified service scope
+#         # TODO: Validate token format and expiration
+#         # TODO: Test actual service connectivity with token
+#         # TODO: Measure authentication latency and success rate
+#         # TODO: Return authentication health status with metrics
+#         pass
 
-    async def rotate_credentials(self, new_credential_config: Dict[str, Any]) -> Dict[str, Any]:
-        """Handle credential rotation with zero-downtime."""
-        # TODO: Validate new credential configuration
-        # TODO: Test new credentials before switching
-        # TODO: Implement graceful transition from old to new credentials
-        # TODO: Update all service clients with new credentials
-        # TODO: Verify all services continue working after rotation
-        # TODO: Return rotation status and any issues encountered
-        pass
+#     async def handle_auth_error(self, error: ClientAuthenticationError, service_name: str) -> WorkflowResult:
+#         """Handle authentication errors with retry and fallback strategies."""
+#         # TODO: Log authentication error with service context
+#         # TODO: Attempt credential refresh and retry
+#         # TODO: Check for expired certificates or configuration issues
+#         # TODO: Provide actionable error messages for troubleshooting
+#         # TODO: Implement exponential backoff for retry attempts
+#         # TODO: Return error handling results with recommendations
+#         pass
+
+#     async def get_service_health(self) -> WorkflowResult:
+#         """Get comprehensive authentication service health."""
+#         # TODO: Check credential validity across all required scopes
+#         # TODO: Test connectivity to Azure identity endpoints
+#         # TODO: Validate certificate status and expiration
+#         # TODO: Monitor authentication success rates
+#         # TODO: Check for any pending credential rotations
+#         # TODO: Return comprehensive health status report
+#         pass
+
+#     async def rotate_credentials(self, new_credential_config: Dict[str, Any]) -> WorkflowResult:
+#         """Handle credential rotation with zero-downtime."""
+#         # TODO: Validate new credential configuration
+#         # TODO: Test new credentials before switching
+#         # TODO: Implement graceful transition from old to new credentials
+#         # TODO: Update all service clients with new credentials
+#         # TODO: Verify all services continue working after rotation
+#         # TODO: Return rotation status and any issues encountered
+#         pass
