@@ -71,7 +71,7 @@ class CorpusAnalyzer:
                     technical_density=CorpusAnalysisConstants.MIN_VOCABULARY_DIVERSITY,
                     complexity_score=CorpusAnalysisConstants.MIN_VOCABULARY_DIVERSITY
                 ),
-                quality_metrics={"no_documents_found": 1.0},
+                quality_metrics={"no_documents_found": CorpusAnalysisConstants.MAX_VOCABULARY_DIVERSITY},
                 recommendations=[f"No documents found in domain path: {domain_path}"]
             )
         
@@ -154,7 +154,7 @@ class CorpusAnalyzer:
                     technical_density=CorpusAnalysisConstants.MIN_VOCABULARY_DIVERSITY,
                     complexity_score=CorpusAnalysisConstants.MIN_VOCABULARY_DIVERSITY
                 ),
-                quality_metrics={"analysis_error": 1.0},
+                quality_metrics={"analysis_error": CorpusAnalysisConstants.MAX_VOCABULARY_DIVERSITY},
                 recommendations=["All documents contained errors or were unreadable"]
             )
         
