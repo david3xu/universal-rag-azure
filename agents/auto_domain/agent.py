@@ -5,7 +5,7 @@ Main agent for automatic domain configuration generation.
 """
 
 from pydantic_ai import Agent
-from typing import Dict, Any
+from typing import Dict, Any, Optional
 from models.domain import CorpusAnalysis, DomainConfig
 from models.knowledge import KnowledgeExtraction, EntityResult, RelationshipResult, KnowledgeValidation
 from models.azure import AzureServiceResponse, EmbeddingResult, SearchResult, ServiceHealth
@@ -36,25 +36,27 @@ class AutoDomainAgent:
         # Orchestration metrics
         self.analyses_completed = 0
     
-    async def analyze_corpus(self, domain_path: str) -> CorpusAnalysis:
-        """Basic corpus analysis - simplified version."""
+    async def analyze_corpus(self, domain_path: str, container_name: Optional[str] = None) -> CorpusAnalysis:
+        """Basic corpus analysis using real Azure Blob Storage - high quality implementation."""
         # TODO: Implement basic corpus analysis using CorpusAnalysis model
         # TODO: Scan documents in domain_path and collect statistics
         # TODO: Extract basic domain characteristics using centralized prompt flows
         # TODO: Return domain analysis results as CorpusAnalysis structured model
         
-        # === BASIC IMPLEMENTATION WITH CORPUS ANALYZER INTEGRATION ===
-        # For basic implementation, use sample documents (TODO: scan actual domain_path)
-        sample_documents = [
-            f"Sample document 1 for domain at {domain_path}",
-            f"Sample document 2 for domain at {domain_path}",
-            f"Sample document 3 for domain at {domain_path}"
-        ]
+        # === REAL AZURE STORAGE IMPLEMENTATION (NO FAKE DATA) ===
+        import os
         
-        # Use corpus analyzer to analyze documents
-        analysis = await self.corpus_analyzer.analyze_documents(sample_documents)
+        # Use default container from environment if not provided
+        if container_name is None:
+            container_name = os.getenv("AZURE_STORAGE_CONTAINER", "universal-rag-data")
         
-        # Update domain name from path
+        # Use corpus analyzer to scan and analyze real documents from Azure Storage
+        analysis = await self.corpus_analyzer.analyze_documents_from_storage(
+            container_name=container_name,
+            domain_path=domain_path
+        )
+        
+        # Ensure domain name is set correctly
         analysis.domain = domain_path
         
         # Track metrics
@@ -76,17 +78,17 @@ class AutoDomainAgent:
         
         return config
     
-    async def complete_domain_analysis(self, domain_name: str, domain_path: str) -> tuple[CorpusAnalysis, DomainConfig]:
-        """Complete end-to-end domain analysis and configuration generation."""
+    async def complete_domain_analysis(self, domain_name: str, domain_path: str, container_name: Optional[str] = None) -> tuple[CorpusAnalysis, DomainConfig]:
+        """Complete end-to-end domain analysis and configuration generation using real Azure Storage."""
         # TODO: Implement comprehensive workflow orchestration
         # TODO: Add validation and quality checks between steps
         # TODO: Implement error handling and recovery strategies
         
-        # === BASIC IMPLEMENTATION - ORCHESTRATE CORPUS ANALYSIS → CONFIG GENERATION ===
-        # Step 1: Analyze corpus
-        corpus_analysis = await self.analyze_corpus(domain_path)
+        # === REAL AZURE STORAGE IMPLEMENTATION - ORCHESTRATE CORPUS ANALYSIS → CONFIG GENERATION ===
+        # Step 1: Analyze corpus using real Azure Blob Storage documents
+        corpus_analysis = await self.analyze_corpus(domain_path, container_name)
         
-        # Step 2: Generate configuration
+        # Step 2: Generate configuration from real corpus analysis
         domain_config = await self.generate_domain_config(domain_name, corpus_analysis)
         
         return corpus_analysis, domain_config

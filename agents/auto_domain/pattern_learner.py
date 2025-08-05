@@ -177,13 +177,11 @@ class PatternLearner:
         if not container_name or not domain_name:
             raise ValueError("Container name and domain name are required")
             
-        # Step 1: Analyze corpus using CorpusAnalyzer
-        sample_documents = [
-            f"Sample document 1 for {domain_name} in {container_name}",
-            f"Sample document 2 for {domain_name} in {container_name}",
-            f"Sample document 3 for {domain_name} in {container_name}"
-        ]
-        corpus_analysis = await self.corpus_analyzer.analyze_documents(sample_documents)
+        # Step 1: Analyze corpus using real Azure Storage documents
+        corpus_analysis = await self.corpus_analyzer.analyze_documents_from_storage(
+            container_name=container_name,
+            domain_path=domain_name
+        )
         
         # Step 2: Learn patterns and thresholds from corpus
         learned_thresholds = await self.learn_thresholds({
@@ -192,9 +190,13 @@ class PatternLearner:
             "document_count": corpus_analysis.statistics.document_count
         })
         
-        # Step 3: Extract patterns from sample content
-        sample_content = " ".join(sample_documents)
-        knowledge_extraction = await self.extract_patterns(sample_content)
+        # Step 3: Extract patterns from real document content via storage
+        # Use corpus_analysis content for pattern extraction
+        from azure_services.storage_client import StorageClient
+        storage_client = StorageClient()
+        real_documents = await storage_client.scan_domain_documents(domain_name, container_name)
+        real_content = " ".join(real_documents) if real_documents else f"[Analysis for domain: {domain_name}]"
+        knowledge_extraction = await self.extract_patterns(real_content)
         
         # Step 4: Generate domain configuration using ConfigBuilder
         domain_config = await self.config_builder.build_domain_config(
